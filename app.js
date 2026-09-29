@@ -1,224 +1,63 @@
-(() => {
-  const printMode = new URLSearchParams(window.location.search).get('print');
-  if (printMode === 'map') document.body.classList.add('print-map');
-  const pages = [...document.querySelectorAll('.page')];
-  const navItems = [...document.querySelectorAll('.nav-item')];
-  const sidebar = document.querySelector('.sidebar');
-  let processingTimer = null;
-  let toastTimer = null;
-  let zoom = 1;
-
-  function showPage(name) {
-    pages.forEach(page => page.classList.toggle('active', page.id === `page-${name}`));
-    navItems.forEach(item => item.classList.toggle('active', item.dataset.page === name));
-    sidebar.classList.remove('open');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function showToast(title, message) {
-    const toast = document.getElementById('toast');
-    document.getElementById('toastTitle').textContent = title;
-    document.getElementById('toastMessage').textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
-  }
-
-  navItems.forEach(item => item.addEventListener('click', () => showPage(item.dataset.page)));
-  document.querySelectorAll('[data-page-link]').forEach(button => button.addEventListener('click', () => showPage(button.dataset.pageLink)));
-  document.getElementById('newProjectSide').addEventListener('click', () => showPage('new'));
-  document.getElementById('mobileMenu').addEventListener('click', () => sidebar.classList.toggle('open'));
-  document.getElementById('toastClose').addEventListener('click', () => document.getElementById('toast').classList.remove('show'));
-
-  function connectUpload(zoneId, inputId, labelId) {
-    const zone = document.getElementById(zoneId);
-    const input = document.getElementById(inputId);
-    const setFile = file => { document.getElementById(labelId).textContent = `${file.name} · ${formatBytes(file.size)}`; };
-    zone.addEventListener('click', () => input.click());
-    zone.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') input.click(); });
-    zone.addEventListener('dragover', event => { event.preventDefault(); zone.classList.add('drag'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
-    zone.addEventListener('drop', event => { event.preventDefault(); zone.classList.remove('drag'); if (event.dataTransfer.files[0]) setFile(event.dataTransfer.files[0]); });
-    input.addEventListener('change', () => { if (input.files[0]) setFile(input.files[0]); });
-  }
-  connectUpload('uploadZone','fileInput','fileName');
-  connectUpload('imageUploadZone','imageFileInput','imageFileName');
-  function formatBytes(bytes) { return bytes > 1048576 ? `${(bytes / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`; }
-
-  document.getElementById('newProjectForm').addEventListener('submit', event => {
-    event.preventDefault();
-    startProcessing();
-  });
-
-  const processingCopy = [
-    'Recebendo arquivo da propriedade…','Conferindo integridade das geometrias…','Identificando sistema de referência…','Localizando contexto municipal…','Organizando camadas do projeto…','Processando uso e cobertura demonstrativos…','Calculando hectares e percentuais…','Aplicando simbologia do template…','Executando checklist técnico…','Montando layout cartográfico…','Estruturando relatório técnico…','Organizando PDF e pacote final…'
-  ];
-
-  function startProcessing() {
-    clearInterval(processingTimer);
-    showPage('processing');
-    const steps = [...document.querySelectorAll('#processingSteps > div')];
-    const scanMap = document.getElementById('scanMap');
-    scanMap.setAttribute('class','scan-map');
-    steps.forEach(step => step.classList.remove('active','done'));
-    let current = 0;
-    const started = Date.now();
-    const update = () => {
-      steps.forEach((step, index) => {
-        step.classList.toggle('done', index < current);
-        step.classList.toggle('active', index === current);
-      });
-      const pct = Math.min(100, Math.round((current / 12) * 100));
-      document.getElementById('processingBar').style.width = `${pct}%`;
-      document.getElementById('processingPercent').textContent = `${pct}%`;
-      document.getElementById('processingMessage').textContent = processingCopy[Math.min(current, 11)];
-      scanMap.setAttribute('class', `scan-map stage-${current}`);
-      const seconds = Math.floor((Date.now() - started) / 1000);
-      document.getElementById('processingTime').textContent = `00:${String(seconds).padStart(2,'0')}`;
-      if (current >= 12) finishProcessing();
-      current += 1;
-    };
-    update();
-    processingTimer = setInterval(update, 660);
-  }
-
-  function finishProcessing() {
-    clearInterval(processingTimer);
-    document.querySelectorAll('#processingSteps > div').forEach(step => { step.classList.add('done'); step.classList.remove('active'); });
-    document.getElementById('processingBar').style.width = '100%';
-    document.getElementById('processingPercent').textContent = '100%';
-    document.getElementById('processingMessage').textContent = 'Projeto demonstrativo pronto para revisão.';
-    document.getElementById('scanMap').setAttribute('class','scan-map stage-12');
-    setTimeout(() => { showPage('overview'); showToast('Projeto pronto', '12 etapas concluídas. Produtos demonstrativos organizados.'); }, 650);
-  }
-  document.getElementById('skipProcessing').addEventListener('click', finishProcessing);
-
-  const reviewDrawer = document.getElementById('reviewDrawer');
-  const drawerBackdrop = document.getElementById('drawerBackdrop');
-  let selectedFeature = null;
-  const areaTotals = { 'Vegetação nativa': 745.10, 'Área aberta': 663.62, 'Reserva Legal': 525.85, 'APP': 85.80 };
-  function toggleDrawer(open) {
-    reviewDrawer.classList.toggle('open', open);
-    drawerBackdrop.classList.toggle('open', open);
-    reviewDrawer.setAttribute('aria-hidden', String(!open));
-  }
-  function openFeature(feature) {
-    selectedFeature = feature;
-    document.querySelectorAll('.reviewable').forEach(item => item.classList.toggle('selected-feature', item === feature));
-    document.getElementById('classSelect').value = feature.dataset.class;
-    document.getElementById('featureArea').textContent = `${formatNumber(Number(feature.dataset.area))} ha`;
-    document.getElementById('featureConfidence').textContent = feature.dataset.feature === 'open-0147' ? '87%' : '93%';
-    toggleDrawer(true);
-  }
-  document.querySelectorAll('.reviewable').forEach(feature => feature.addEventListener('click', () => openFeature(feature)));
-  document.querySelectorAll('[data-action="review"]').forEach(button => button.addEventListener('click', () => openFeature(document.querySelector('[data-feature="open-0147"]'))));
-  document.querySelectorAll('[data-close-drawer]').forEach(button => button.addEventListener('click', () => toggleDrawer(false)));
-  drawerBackdrop.addEventListener('click', () => toggleDrawer(false));
-  document.getElementById('saveReview').addEventListener('click', () => {
-    const newClass = document.getElementById('classSelect').value;
-    const oldClass = selectedFeature?.dataset.class;
-    const area = Number(selectedFeature?.dataset.area || 0);
-    if (selectedFeature && oldClass !== newClass && areaTotals[oldClass] !== undefined && areaTotals[newClass] !== undefined) {
-      areaTotals[oldClass] -= area;
-      areaTotals[newClass] += area;
-      selectedFeature.dataset.class = newClass;
-      const classNames = {'Área aberta':'open','Vegetação nativa':'native','Reserva Legal':'reserve','APP':'app'};
-      selectedFeature.classList.remove(`layer-${classNames[oldClass]}`);
-      selectedFeature.classList.add(`layer-${classNames[newClass]}`);
-      updateAreaDisplay();
-    }
-    toggleDrawer(false);
-    showToast('Classificação atualizada', 'Quadro de áreas e produtos recalculados na simulação.');
-  });
-  function formatNumber(value) { return value.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-  function updateAreaDisplay() {
-    const total = 1502.42;
-    const nativePct = areaTotals['Vegetação nativa'] / total * 100;
-    const openPct = areaTotals['Área aberta'] / total * 100;
-    const updates = [
-      ['metricNative',formatNumber(areaTotals['Vegetação nativa'])],['percentNative',`${formatNumber(nativePct)}%`],['donutNative',`${formatNumber(nativePct)}%`],['donutOpen',`${formatNumber(openPct)}%`]
-    ];
-    updates.forEach(([id,value]) => { const el = document.getElementById(id); el.textContent = value; el.classList.remove('recalculated'); void el.offsetWidth; el.classList.add('recalculated'); });
-    document.querySelector('.donut').style.background = `conic-gradient(#4d9a69 0 ${nativePct}%,#c09045 ${nativePct}% ${nativePct + openPct}%,#5bbac6 ${nativePct + openPct}% ${nativePct + openPct + 5.71}%,#c8cfcb ${nativePct + openPct + 5.71}%)`;
-  }
-
-  const detailsModal = document.getElementById('detailsModal');
-  document.querySelectorAll('[data-action="details"]').forEach(button => button.addEventListener('click', () => { detailsModal.classList.add('open'); detailsModal.setAttribute('aria-hidden','false'); }));
-  document.querySelectorAll('[data-close-modal]').forEach(button => button.addEventListener('click', () => { detailsModal.classList.remove('open'); detailsModal.setAttribute('aria-hidden','true'); }));
-  detailsModal.addEventListener('click', event => { if (event.target === detailsModal) detailsModal.classList.remove('open'); });
-
-  document.querySelectorAll('[data-layer]').forEach(check => check.addEventListener('change', () => {
-    document.querySelectorAll(`.layer-${check.dataset.layer}`).forEach(layer => layer.style.display = check.checked ? '' : 'none');
-    const active = document.querySelectorAll('[data-layer]:checked').length;
-    document.querySelector('.legend-header span').textContent = `${active + 1} ativas`;
-  }));
-  const mapWrap = document.getElementById('mapWrap');
-  const originalToggle = document.getElementById('originalToggle');
-  const vectorToggle = document.getElementById('vectorToggle');
-  function showOriginal() {
-    mapWrap.className = 'map-wrap original-only';
-    originalToggle.classList.add('active'); vectorToggle.classList.remove('active');
-  }
-  function showVectorized() {
-    mapWrap.className = 'map-wrap';
-    vectorToggle.classList.add('active'); originalToggle.classList.remove('active');
-  }
-  function runVectorDemo() {
-    const button = document.getElementById('processMap');
-    showOriginal();
-    mapWrap.className = 'map-wrap vector-demo is-scanning';
-    button.disabled = true; button.textContent = 'Processando…';
-    mapWrap.scrollIntoView({behavior:'smooth',block:'center'});
-    setTimeout(() => mapWrap.classList.add('stage-river'),700);
-    setTimeout(() => mapWrap.classList.add('stage-native'),1400);
-    setTimeout(() => mapWrap.classList.add('stage-open'),2100);
-    setTimeout(() => mapWrap.classList.add('stage-final'),2800);
-    setTimeout(() => { mapWrap.classList.remove('is-scanning'); button.disabled = false; button.textContent = '↻ Reprocessar'; vectorToggle.classList.add('active'); originalToggle.classList.remove('active'); showToast('Vetorização sugerida', 'Rio, vegetação e área aberta estão prontos para revisão humana.'); },3300);
-  }
-  originalToggle.addEventListener('click', showOriginal);
-  vectorToggle.addEventListener('click', showVectorized);
-  document.getElementById('processMap').addEventListener('click', runVectorDemo);
-  document.getElementById('demoVector').addEventListener('click', runVectorDemo);
-  function applyZoom() { document.getElementById('geoMap').style.transform = `scale(${zoom})`; }
-  document.getElementById('zoomIn').addEventListener('click', () => { zoom = Math.min(1.6, zoom + .15); applyZoom(); });
-  document.getElementById('zoomOut').addEventListener('click', () => { zoom = Math.max(1, zoom - .15); applyZoom(); });
-  document.getElementById('fitMap').addEventListener('click', () => { zoom = 1; applyZoom(); });
-  document.getElementById('fullMap').addEventListener('click', () => document.getElementById('mapWrap').classList.toggle('fullscreen-map'));
-
-  document.querySelectorAll('[data-download]').forEach(button => button.addEventListener('click', () => {
-    const kind = button.dataset.download;
-    const files = {
-      map: ['assets/Mapa_Uso_Cobertura_DEMO.pdf','Mapa PDF aberto','Arquivo demonstrativo pronto para apresentação.'],
-      qgis: ['assets/Projeto_QGIS_DEMO.qgs','Projeto QGIS baixado','Arquivo conceitual para demonstrar o fluxo de entrega.'],
-      gpkg: ['assets/Vetores_Revisados_DEMO.gpkg','GeoPackage baixado','Camadas vetoriais demonstrativas organizadas.'],
-      shp: ['assets/Camadas_SHP_DEMO.zip','Pacote SHP baixado','Arquivos demonstrativos preparados para o QGIS.'],
-      full: ['assets/Entrega_Completa_DEMO.zip','Pacote completo baixado','Inclui arquivos demonstrativos e aviso de uso.'],
-      report: ['assets/Relatorio_Tecnico_DEMO.pdf','Relatório baixado','PDF demonstrativo pronto para revisão.']
-    };
-    const [href,title,message] = files[kind];
-    const link = document.createElement('a'); link.href = href; link.download = href.split('/').pop(); document.body.appendChild(link); link.click(); link.remove();
-    showToast(title,message);
-  }));
-
-  document.querySelectorAll('[data-action]').forEach(button => {
-    const action = button.dataset.action;
-    if (['review','details'].includes(action)) return;
-    button.addEventListener('click', () => {
-      const responses = {
-        share:['Link de apresentação copiado','Nesta POC, o compartilhamento é apenas uma simulação local.'],
-        generateMap:['Mapa final gerado','Simbologia, quadro de áreas e layout foram atualizados após a revisão.'],
-        rerun:['QA executado novamente','42 regras verificadas em 38 segundos simulados.'],
-        approve:['Projeto aprovado','Status atualizado na memória demonstrativa.'],
-        resolve:['Item encaminhado','A nomenclatura foi marcada para correção na próxima versão.'],
-        editReport:['Modo de edição','A edição colaborativa será conectada em uma futura versão.'],
-        uploadDoc:['Documento adicionado','Envio de documentos simulado na memória do projeto.']
-      };
-      if (responses[action]) showToast(...responses[action]);
-    });
-  });
-
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { toggleDrawer(false); detailsModal.classList.remove('open'); document.getElementById('mapWrap').classList.remove('fullscreen-map'); }
-  });
-  if (printMode === 'map') showPage('overview');
+/* GeoOps — POC local. Não contém análise de satélite, IA ou integração GIS reais. */
+(() => {'use strict';
+const $=id=>document.getElementById(id), $$=q=>[...document.querySelectorAll(q)];
+const fmt=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TOTAL=1502.42, extent=1125*745, outer=[[125,140],[1250,140],[1250,885],[125,885]];
+const forest=[[240,140],[430,149],[527,163],[551,223],[619,247],[649,154],[766,148],[807,213],[804,289],[842,351],[858,382],[900,407],[954,430],[983,486],[1010,546],[1001,611],[1044,676],[1114,722],[1207,772],[1176,819],[1048,806],[967,847],[942,870],[839,863],[770,846],[704,823],[640,790],[554,754],[474,739],[416,753],[392,819],[341,775],[278,724],[277,677],[223,619],[207,548],[179,482],[183,408],[164,332],[197,288],[202,213]];
+const patch=[[549,155],[634,147],[624,230],[562,212]];
+const river=[[689,0],[730,70],[770,120],[705,172],[686,213],[710,241],[713,290],[751,328],[786,342],[849,397],[917,416],[950,444],[962,479],[1001,513],[1010,556],[1000,592],[1033,646],[1086,689],[1142,727],[1199,751],[1228,797],[1239,845],[1290,908],[1325,964],[1370,1024]];
+const area=points=>Math.abs(points.reduce((n,p,i)=>{let q=points[(i+1)%points.length];return n+p[0]*q[1]-q[0]*p[1]},0)/2);
+const path=points=>'M'+points.map(p=>p.join(',')).join(' L')+' Z';
+const riverPath='M'+river.map(p=>p.join(',')).join(' L');
+const features=[{id:'native-main',name:'Maciço de vegetação',class:'native',area:area(forest)/extent*TOTAL,path:path(forest)},{id:'open-main',name:'Área aberta principal',class:'open',area:(extent-area(forest)-area(patch))/extent*TOTAL,path:path(outer)+' '+path(forest)+' '+path(patch)},{id:'review-patch',name:'Área de revisão',class:'open',area:area(patch)/extent*TOTAL,path:path(patch)}];
+let state={project:'Fazenda Santa Clara',client:'Escritório Ambiental',city:'Município de exemplo',date:'2026-08-15',version:1,processed:false,reviewed:[],mode:'image',selected:null,busy:false};
+let zoom=1,toastTimer,runToken=0;
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
+function record(title,detail,type='Revisão'){window.GeoBrain?.record({title,detail,type,source:'Estúdio GeoOps · DEMO'})}
+function totals(){let native=features.filter(f=>f.class==='native').reduce((n,f)=>n+f.area,0);return{native,open:TOTAL-native}}
+function featureMarkup(){return features.map(f=>`<path class="feature${state.selected===f.id?' selected':''}" tabindex="0" role="button" aria-label="Revisar ${esc(f.name)}" data-feature="${f.id}" data-class="${f.class}" d="${f.path}" fill="${f.class==='native'?'#89d59c':'#e6ca74'}" fill-opacity="${Number($('opacity').value)/100}" stroke="${f.class==='native'?'#b9e6bb':'#e7d18b'}" stroke-width="2" fill-rule="evenodd"/>`).join('')}
+function draw(){
+ $('vectorGroup').innerHTML=featureMarkup()+`<g data-overlay="app" clip-path="url(#propertyClip)"><path d="${riverPath}" fill="none" stroke="#8dd1df" stroke-width="36" opacity=".25"/></g><g data-overlay="reserve"><path d="M240,330 L360,270 L460,280 L610,350 L780,500 L690,700 L400,660 L230,500 Z" fill="url(#reservePattern)" stroke="#e3d690" stroke-width="2"/></g><g data-overlay="river" clip-path="url(#propertyClip)"><path d="${riverPath}" fill="none" stroke="#163e46" stroke-width="7" opacity=".5"/><path d="${riverPath}" fill="none" stroke="#afe8f2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>`;
+ syncLayers();syncMetrics();
+}
+ function syncLayers(){let visible=state.processed&&state.mode!=='image';$('vectorGroup').style.display=visible?'':'none';
+ $$('[data-layer]').forEach(el=>{let name=el.dataset.layer;if(name==='boundary')$('propertyBoundary').style.display=el.checked?'':'none';else if(name==='native'||name==='open')$$(`[data-class="${name}"]`).forEach(p=>p.style.display=el.checked?'':'none');else $$(`[data-overlay="${name}"]`).forEach(p=>p.style.display=el.checked?'':'none')});
+ $('mapLegend').hidden=!visible;$('mapInstruction').hidden=state.processed||state.busy;$('compareControl').hidden=state.mode!=='compare'||!state.processed;
+ $('compareRect').setAttribute('width',state.mode==='compare'?1536*Number($('compareSlider').value)/100:1536);
+ $('mapModeLabel').textContent=state.mode==='image'?'IMAGEM ORIGINAL · ILUSTRATIVA':state.mode==='compare'?'COMPARAÇÃO · VETORES À ESQUERDA':'VETORES SUGERIDOS · REVISÃO HUMANA';
+}
+function syncMetrics(){let a=totals();['native','open'].forEach(k=>{$(k+'Area').textContent=state.processed?fmt(a[k]):'—';$(k+'Pct').textContent=state.processed?fmt(a[k]/TOTAL*100)+'%':'—'});$('nativeTrack').style.width=(state.processed?a.native/TOTAL*100:50)+'%';$('versionLabel').textContent=`Versão ${String(state.version).padStart(2,'0')} · ${state.reviewed.length?'revisão parcial':'não revisada'}`;$('reviewStatus').textContent=state.reviewed.length?'PARCIAL':'PENDENTE';$('mapStatus').textContent=state.busy?'Processamento visual simulado':state.processed?`${features.length} feições · ${state.reviewed.length} revisada(s) · DEMO`:'Pronto para demonstração'}
+function setMode(m){if(state.busy)return;if(m!=='image'&&!state.processed){toast('Processe a imagem para revelar os vetores demonstrativos.');return}state.mode=m;$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));syncLayers()}
+function navigate(name){if(!['mapa','brain','agents','deliver'].includes(name))name='mapa';$$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+name));$$('.topbar [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===name));if(name==='deliver')renderSheet();history.replaceState(null,'','#'+name);window.dispatchEvent(new CustomEvent('geoops:page',{detail:{name}}));window.GeoBrain?.refresh()}
+function info(title,html){$('infoTitle').textContent=title;$('infoBody').innerHTML=html;$('infoDialog').showModal()}
+function about(){info('Uma demonstração, com limites claros.',`<p>Esta é uma POC de produto: imagem aérea fictícia gerada por IA, vetores preparados e processamento visual simulado. Nenhuma imagem histórica ou serviço de satélite é consultado.</p><p>Trocar a data altera somente a referência do cenário. Upload registra o nome do arquivo, sem interpretá-lo. A reclassificação e o recálculo proporcional das áreas funcionam localmente.</p><p>O cérebro usa documentos fictícios e respostas pré-definidas com fontes demonstrativas. Os agentes são uma simulação, sem conexão a IA ou ao acervo privado de ninguém.</p><p>Para operação real: perímetro validado, imagem georreferenciada, SRC, método de classificação e revisão por profissional habilitado. APP e Reserva Legal não são reconhecidas juridicamente a partir de pixels.</p>`)}
+async function process(){if(state.busy)return;state.busy=true;const token=++runToken;$('processingCard').hidden=false;$('mapViewport').classList.add('processing');$('processMap').disabled=true;$('generateMap').disabled=true;state.mode='vectors';state.processed=false;$('vectorGroup').style.display='none';syncMetrics();syncLayers();
+ const steps=[['Perímetro recebido','Cenário demonstrativo carregado; arquivo real não interpretado.'],['Referência da imagem preparada','Base sintética; data selecionada não consulta acervo histórico.'],['Geometria local organizada','Grade gráfica de exemplo. SRC e município reais pendentes.'],['Vegetação sugerida','Polígonos preparados para a demonstração.'],['Áreas abertas e curso d’água sugeridos','Sem delimitação legal automática de APP ou Reserva Legal.'],['Vetores e tabela preparados','Áreas proporcionais à geometria do cenário fictício.'],['Pronto para revisão humana','Clique em uma feição para corrigir sua classificação.']];
+ for(let i=0;i<steps.length;i++){if(token!==runToken)return;$('processingTitle').textContent=steps[i][0];$('processingDetail').textContent=steps[i][1];$('processingPercent').textContent=Math.round((i+1)/steps.length*100)+'%';$('processingBar').style.width=(i+1)/steps.length*100+'%';if(i>=3){state.processed=true;draw();if(i===3){$$('[data-class="open"]').forEach(p=>p.style.display='none');$$('[data-overlay="river"]').forEach(p=>p.style.display='none')}}await new Promise(r=>setTimeout(r,650))}
+ if(token!==runToken)return;state.busy=false;state.processed=true;$('processingCard').hidden=true;$('mapViewport').classList.remove('processing');$('processMap').disabled=false;$('generateMap').disabled=false;draw();setMode('vectors');record('Vetores sugeridos',`3 feições de exemplo preparadas em ${state.date}. Origem: imagem gerada por IA; nenhum processamento geoespacial real.`,'Processamento');toast('Vetores prontos. Clique no mapa para revisar uma área.');
+}
+function selectFeature(id){if(!state.processed){toast('Primeiro, clique em Processar imagem.');return}if(state.busy)return;let f=features.find(x=>x.id===id);if(!f)return;state.selected=id;setMode('vectors');draw();$('reviewIntro').hidden=true;$('reviewForm').hidden=false;$('featureId').textContent='FEIÇÃO '+String(features.indexOf(f)+1).padStart(3,'0');$('featureTitle').textContent=f.name;$('featureArea').textContent=fmt(f.area)+' ha';$('classSelect').value=f.class;$('reviewNote').value=f.note||'';$('classSelect').focus({preventScroll:true})}
+function closeReview(){state.selected=null;$('reviewForm').hidden=true;$('reviewIntro').hidden=false;draw()}
+function sheetSvg(){let svg=$('mapSvg').cloneNode(true);svg.removeAttribute('id');svg.setAttribute('viewBox','0 0 1536 1024');let group=svg.querySelector('#vectorGroup');group.style.display='';group.removeAttribute('clip-path');svg.querySelectorAll('.feature').forEach(p=>{p.setAttribute('class','');p.removeAttribute('tabindex');p.removeAttribute('role');p.removeAttribute('aria-label');p.style.display='';p.setAttribute('fill-opacity','.20')});svg.querySelectorAll('[data-overlay]').forEach(p=>p.style.display=p.dataset.overlay==='river'?'':'none');svg.querySelector('#propertyBoundary').style.display='';svg.querySelectorAll('[id]').forEach(p=>{if(p.id!=='propertyClip'&&p.id!=='reservePattern')p.removeAttribute('id')});let html=new XMLSerializer().serializeToString(svg).replace(/propertyClip/g,'sheetPropertyClip').replace(/reservePattern/g,'sheetReservePattern');return html}
+function renderSheet(){let a=totals();$('mapSheet').innerHTML=`<header class="sheet-head"><div><span class="sheet-eyebrow">ENGENHARIA AMBIENTAL · CARTOGRAFIA DEMONSTRATIVA</span><h2>Mapa de uso e cobertura do solo</h2><p>${esc(state.project)} · ${esc(state.city)}</p></div><span class="sheet-brand">GeoOps ◈</span></header><div class="sheet-map">${sheetSvg()}<div class="north">N<span>↑</span></div></div><div class="sheet-bottom"><div><h3>LEGENDA</h3><div class="sheet-legend"><span><i class="swatch boundary"></i>Limite da propriedade · exemplo</span><span><i class="swatch native"></i>Vegetação nativa</span><span><i class="swatch open"></i>Área aberta</span><span><i class="swatch river"></i>Curso d’água · traçado ilustrativo</span></div></div><div><h3>QUADRO DE ÁREAS · DEMONSTRAÇÃO</h3><table class="sheet-table"><thead><tr><th>Classe</th><th>Área (ha)</th><th>%</th></tr></thead><tbody><tr><td>Vegetação nativa</td><td>${fmt(a.native)}</td><td>${fmt(a.native/TOTAL*100)}</td></tr><tr><td>Área aberta</td><td>${fmt(a.open)}</td><td>${fmt(a.open/TOTAL*100)}</td></tr><tr><td><strong>Total</strong></td><td><strong>1.502,42</strong></td><td><strong>100,00</strong></td></tr></tbody></table></div></div><div class="sheet-info"><div>REFERÊNCIA DO CENÁRIO<strong>${state.date.split('-').reverse().join('/')}</strong></div><div>VERSÃO / REVISÃO<strong>V${String(state.version).padStart(2,'0')} · ${state.reviewed.length}/3 feições revisadas</strong></div><div>SRC / ESCALA / RT<strong>Não definidos · validação pendente</strong></div></div><div class="sheet-footer">DEMONSTRAÇÃO — IMAGEM GERADA POR IA. SEM VALIDADE TÉCNICA OU GEOGRÁFICA. Áreas fictícias, proporcionais à geometria local. Norte gráfico ilustrativo. Reserva Legal e APP exigem dados e critérios próprios e não integram a soma de cobertura. Responsável técnico: não atribuído.</div>`}
+function qa(){let items=[['Camadas obrigatórias','Definir escopo real'],['Sistema de referência (SRC)','Pendente · grade local'],['Geometrias válidas','Validação GIS pendente'],['Duplicidades','Validação GIS pendente'],['Nomenclatura local','IDs únicos no exemplo',true],['Consistência da soma de áreas','1.502,42 ha · 100,00%',true],['Classificação técnica',`${state.reviewed.length}/3 feições revisadas`],['Simbologia e layout','Composição demonstrativa',true],['Arquivos de entrega','SVG/CSV atuais; GIS conceitual']];info('QA técnico — checklist de revisão',`<p>Este checklist distingue o que a interface verifica do que depende de dados geoespaciais reais.</p><table class="qa-table">${items.map(r=>`<tr><td>${r[0]}</td><td class="${r[2]?'pass':''}">${r[1]}</td></tr>`).join('')}</table>`)}
+function download(name,data,type){const u=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),30000)}
+async function svgDownload(){try{const original=$('mapSheet').querySelector('svg');let svg=original.cloneNode(true);svg.setAttribute('xmlns','http://www.w3.org/2000/svg');const img=new Image();img.src='assets/aerial-demo-v2.png';await img.decode();const canvas=document.createElement('canvas');canvas.width=1536;canvas.height=1024;canvas.getContext('2d').drawImage(img,0,0);svg.querySelector('image').setAttribute('href',canvas.toDataURL('image/png'));let text=document.createElementNS('http://www.w3.org/2000/svg','text');text.setAttribute('x','24');text.setAttribute('y','995');text.setAttribute('font-size','19');text.setAttribute('fill','#ffffff');text.setAttribute('stroke','#122b20');text.setAttribute('stroke-width','.5');text.textContent='DEMONSTRAÇÃO · BASE SINTÉTICA · SEM VALIDADE GEOGRÁFICA';svg.append(text);download('Mapa_GeoOps_DEMO_v'+state.version+'.svg',new XMLSerializer().serializeToString(svg),'image/svg+xml');toast('Mapa SVG da sessão exportado.')}catch(e){toast('Abra pelo link publicado para exportar o SVG com a imagem incorporada.')}}
+// Eventos da interface. Dados digitados são escapados antes de aparecerem em HTML.
+$$('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));$$('[data-mode]').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));$$('[data-layer]').forEach(el=>el.onchange=syncLayers);
+$$('.close-dialog').forEach(b=>b.onclick=()=>b.closest('dialog').close());$$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){let r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));
+ $('aboutDemo').onclick=about;$('sourceInfo').onclick=about;$('openQa').onclick=qa;$('processMap').onclick=process;$('reviewDemo').onclick=()=>selectFeature('review-patch');$('cancelReview').onclick=closeReview;
+ $('mapSvg').addEventListener('click',e=>{let f=e.target.closest('[data-feature]');if(f)selectFeature(f.dataset.feature)});$('mapSvg').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset.feature){e.preventDefault();selectFeature(e.target.dataset.feature)}});
+ $('reviewForm').onsubmit=e=>{e.preventDefault();let f=features.find(x=>x.id===state.selected);if(!f)return;let old=f.class;f.class=$('classSelect').value;f.note=$('reviewNote').value.slice(0,500);if(!state.reviewed.includes(f.id))state.reviewed.push(f.id);state.version++;record('Classificação revisada',`${f.name}: ${old==='native'?'vegetação nativa':'área aberta'} → ${f.class==='native'?'vegetação nativa':'área aberta'} (${fmt(f.area)} ha). ${f.note}`);closeReview();toast('Classificação salva. Mapa, hectares e percentuais atualizados.');};
+ $('opacity').oninput=()=>{$('opacityValue').textContent=$('opacity').value+'%';$$('#vectorGroup .feature').forEach(p=>p.setAttribute('fill-opacity',Number($('opacity').value)/100))};$('compareSlider').oninput=syncLayers;
+ function zoomMap(n){zoom=Math.max(1,Math.min(2.4,n));let w=1536/zoom,h=1024/zoom;$('mapSvg').setAttribute('viewBox',`${768-w/2} ${512-h/2} ${w} ${h}`)}$('zoomIn').onclick=()=>zoomMap(zoom+.25);$('zoomOut').onclick=()=>zoomMap(zoom-.25);$('zoomFit').onclick=()=>zoomMap(1);
+ $('referenceDate').onchange=()=>{if(!$('referenceDate').value){$('referenceDate').value=state.date;return}state.date=$('referenceDate').value;record('Data de referência alterada',`Cenário em ${state.date}. A base sintética é a mesma; não houve consulta de imagem histórica.`,'Contexto');toast('Data do cenário alterada. A imagem sintética permanece a mesma.')};
+ $('newProject').onclick=()=>{$('newDate').value=state.date;$('newDialog').showModal()};$('newProjectForm').onsubmit=e=>{e.preventDefault();if(state.busy){toast('Aguarde o processamento da demonstração.');return}state.project=$('propertyInput').value.trim()||'Propriedade de exemplo';state.client=$('clientInput').value.trim();state.city=$('cityInput').value.trim();state.date=$('newDate').value;state.processed=false;state.mode='image';state.reviewed=[];state.version=1;features[0].class='native';features[1].class='open';features[2].class='open';features.forEach(f=>f.note='');$('projectTitle').textContent=state.project;$('referenceDate').value=state.date;$('perimeterName').textContent=$('perimeterFile').files.length?[...$('perimeterFile').files].map(f=>f.name).join(', '):'santa_clara_demo.geojson';window.GeoBrain?.setProject(state.project+' · DEMO');record('Projeto aberto',`${state.project}. Perímetro: ${$('perimeterName').textContent}. Arquivo não interpretado; cenário ilustrativo.`,'Projeto');$('newDialog').close();closeReview();setMode('image');navigate('mapa');toast('Projeto aberto. O processamento usa o cenário fictício.')};
+ $('generateMap').onclick=()=>{if(!state.processed){toast('Processe a imagem e revise as feições antes de gerar o mapa.');return}record('Layout cartográfico gerado',`Mapa versão ${state.version}; quadro de áreas atualizado; ${state.reviewed.length}/3 feições revisadas. Produto demonstrativo.`,'Produto');navigate('deliver')};$('printMap').onclick=()=>{renderSheet();window.print()};$('exportSvg').onclick=svgDownload;
+ $('exportCsv').onclick=()=>{let a=totals();download('Quadro_Areas_DEMO_v'+state.version+'.csv','\uFEFFClasse;Area_ha_DEMO;Percentual_DEMO\r\nVegetação nativa;'+fmt(a.native).replace(/\./g,'')+';'+fmt(a.native/TOTAL*100)+'\r\nÁrea aberta;'+fmt(a.open).replace(/\./g,'')+';'+fmt(a.open/TOTAL*100)+'\r\nTotal;1502,42;100,00\r\n','text/csv;charset=utf-8');toast('Tabela atual da sessão exportada.')};
+ $('exportSession').onclick=()=>{download('Projeto_GeoOps_DEMO_v'+state.version+'.json',JSON.stringify({notice:'DEMONSTRAÇÃO. Coordenadas gráficas locais, sem SRC; não é GeoJSON nem levantamento real.',project:state,features:features.map(f=>({...f,area_ha_demo:f.area})),total_ha_demo:TOTAL},null,2),'application/json');toast('Sessão exportada em JSON demonstrativo, sem georreferenciamento.')};
+ $('reportPreview').onclick=()=>{let a=totals();info('Memorial demonstrativo',`<p><strong>${esc(state.project)}</strong> · ${esc(state.city)}<br>Referência do cenário: ${esc(state.date)} · Versão ${state.version}</p><p>O cenário fictício contém ${fmt(a.native)} ha de vegetação nativa e ${fmt(a.open)} ha de área aberta, somando 1.502,42 ha. Foram revisadas ${state.reviewed.length} de 3 feições na interface.</p><p><strong>Método:</strong> classificação preparada, com revisão manual e áreas proporcionais às geometrias locais. Imagem aérea gerada por IA; não houve análise geoespacial automatizada.</p><p><strong>Pendências:</strong> origem de dados reais, SRC, escala, verificação de campo, QA geoespacial e aprovação do responsável técnico. APP e Reserva Legal não avaliadas.</p><p>Este texto é preenchido por template a partir do estado da sessão, não por IA. Não é laudo nem documento apto a protocolo.</p>`)};
+ $('resetDemo').onclick=()=>{if(state.busy){toast('Aguarde o processamento para reiniciar.');return}info('Reiniciar a demonstração?',`<p>As classificações e o histórico fictício desta POC serão limpos. Nenhum arquivo do computador é alterado.</p><button class="btn primary" id="confirmReset">Reiniciar cenário de exemplo</button>`);$('confirmReset').onclick=()=>{try{localStorage.removeItem('geoops-demo-history')}catch(e){}location.href=location.pathname+'#mapa';location.reload()}};
+ window.addEventListener('hashchange',()=>navigate(location.hash.slice(1)));draw();window.GeoBrain?.setProject(state.project+' · DEMO');navigate(location.hash.slice(1)||'mapa');
 })();
