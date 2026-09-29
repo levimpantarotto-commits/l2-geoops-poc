@@ -14,5 +14,7 @@ IMPORTANTE
 Arquivos incluídos no pacote demonstrativo:
 - Mapa_Uso_Cobertura_DEMO.pdf
 - Projeto_QGIS_DEMO.qgs
+- Vetores_Revisados_DEMO.gpkg
+- Camadas_SHP_DEMO.zip
 - limite_fazenda_DEMO.geojson
 - LEIA-ME-ENTREGA-DEMO.txt

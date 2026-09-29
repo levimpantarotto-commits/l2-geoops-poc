@@ -10,11 +10,11 @@ Aplicação web local, clicável e sem dependências externas, criada para demon
 
 ## Roteiro sugerido para a apresentação
 
-1. Mostre o mapa e o quadro de áreas no painel inicial.
-2. Desative/ative camadas, use o zoom e abra **Revisar classificação**.
-3. Passe por **QA técnico**, **Relatório** e **Memória do projeto**.
-4. Clique em **Novo projeto**, confirme os dados pré-preenchidos e inicie o processamento demonstrativo.
-5. Feche com a comparação de impacto: tempo manual informado pelo cliente versus automação + revisão técnica.
+1. Clique em **Imagem original** para mostrar a cena sem marcações e depois em **Processar**.
+2. Observe rio, vegetação, área aberta e reserva surgirem progressivamente sobre a imagem.
+3. Clique na feição marrom, troque a classe e salve: hectares e percentuais são recalculados na tela.
+4. Use **Gerar mapa final** e mostre as exportações para QGIS, GeoPackage, SHP e PDF.
+5. Feche com a comparação baseada na fala do cliente: 3 horas concentrado, podendo ocupar 1–2 dias, versus automação + revisão técnica.
 
 ## Observações importantes
 

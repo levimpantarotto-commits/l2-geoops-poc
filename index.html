@@ -24,7 +24,7 @@
       </div>
 
       <nav class="nav-list">
-        <button class="nav-item active" data-page="overview"><span class="nav-icon">⌂</span>Visão geral</button>
+        <button class="nav-item active" data-page="overview"><span class="nav-icon">⌁</span>Vetorização</button>
         <button class="nav-item" data-page="qa"><span class="nav-icon">✓</span>QA técnico <span class="nav-count">1</span></button>
         <button class="nav-item" data-page="report"><span class="nav-icon">≡</span>Relatório</button>
         <button class="nav-item" data-page="memory"><span class="nav-icon">◫</span>Memória do projeto</button>
@@ -53,17 +53,18 @@
           <div>
             <div class="eyebrow"><span class="status-dot"></span>PROCESSAMENTO CONCLUÍDO <span class="demo-tag">DEMO</span></div>
             <h1>Fazenda Santa Clara</h1>
-            <p>Mapeamento de uso e cobertura do solo · Rio Verde, Goiás</p>
+            <p>Mapeamento de uso e cobertura do solo · Rio Verde, Goiás · Imagem de 25/05/2012</p>
           </div>
           <div class="heading-actions">
-            <button class="button button-secondary" data-download="qgis">↗ Abrir no QGIS</button>
+            <button class="button button-secondary" id="demoVector">▶ Processar imagem</button>
+            <button class="button button-secondary" data-action="generateMap">▤ Gerar mapa final</button>
             <button class="button button-dark" data-action="review">✦ Revisar classificação</button>
           </div>
         </div>
 
         <div class="metrics-grid">
           <article class="metric-card"><div class="metric-icon green">⌁</div><div><span>Área total</span><strong>1.502,42 <small>ha</small></strong><em>100% do imóvel</em></div></article>
-          <article class="metric-card"><div class="metric-icon lime">♧</div><div><span>Vegetação nativa</span><strong>745,10 <small>ha</small></strong><em>49,59% do imóvel</em></div></article>
+          <article class="metric-card"><div class="metric-icon lime">♧</div><div><span>Vegetação nativa</span><strong><b id="metricNative">745,10</b> <small>ha</small></strong><em><b id="percentNative">49,59%</b> do imóvel</em></div></article>
           <article class="metric-card"><div class="metric-icon gold">▧</div><div><span>Reserva Legal</span><strong>525,85 <small>ha</small></strong><em>35,00% do imóvel</em></div></article>
           <article class="metric-card"><div class="metric-icon blue">≈</div><div><span>APP mapeada</span><strong>85,80 <small>ha</small></strong><em>5,71% do imóvel</em></div></article>
         </div>
@@ -73,7 +74,11 @@
             <div class="map-toolbar">
               <div><strong>Mapa temático</strong><span>Uso e cobertura · Situação demonstrativa</span></div>
               <div class="map-toolbar-actions">
-                <button class="map-tool active" id="satelliteToggle">Satélite</button>
+                <div class="comparison-toggle" aria-label="Visualização do mapa">
+                  <button class="map-tool" id="originalToggle">Imagem original</button>
+                  <button class="map-tool active" id="vectorToggle">Vetorizado</button>
+                </div>
+                <button class="map-tool process-tool" id="processMap">▶ Processar</button>
                 <button class="icon-button light" id="fitMap" aria-label="Centralizar mapa">⌗</button>
                 <button class="icon-button light" id="fullMap" aria-label="Ampliar mapa">⛶</button>
               </div>
@@ -103,17 +108,17 @@
 
                 <g clip-path="url(#propertyClip)" id="thematicLayers">
                   <rect x="85" y="46" width="760" height="520" fill="url(#fields)" class="layer layer-open"/>
-                  <path d="M105 230C172 176 241 188 289 247S379 309 431 265 485 178 551 193 602 268 671 252 737 213 796 246L824 348 753 392 687 363 626 455 505 486 427 529 325 462 217 432 176 353Z" fill="#145c43" opacity=".93" class="layer layer-native"/>
+                  <path d="M105 230C172 176 241 188 289 247S379 309 431 265 485 178 551 193 602 268 671 252 737 213 796 246L824 348 753 392 687 363 626 455 505 486 427 529 325 462 217 432 176 353Z" fill="#145c43" opacity=".93" class="layer layer-native reviewable" data-feature="native-main" data-class="Vegetação nativa" data-area="745.10"/>
                   <path d="M131 288C212 260 234 345 314 327S411 226 488 249 574 348 657 306 740 243 818 304L769 374 699 359 651 437 548 457 491 534 388 514 331 452 239 430 201 353Z" fill="url(#nativeDots)" class="layer layer-native" opacity=".78"/>
                   <path d="M174 114L347 79 379 129 497 115 575 64 665 110 723 88 776 169 751 241 682 254 614 210 548 194 481 212 419 270 340 274 287 222 211 211 167 230 128 164Z" fill="url(#reserveHatch)" class="layer layer-reserve"/>
                   <path d="M159 243C224 212 259 278 322 279S417 240 473 205 567 184 627 231 713 269 778 223" fill="none" stroke="#4ed4ca" stroke-width="28" opacity=".30" class="layer layer-app"/>
                   <path d="M159 243C224 212 259 278 322 279S417 240 473 205 567 184 627 231 713 269 778 223" fill="none" stroke="url(#appHatch)" stroke-width="24" class="layer layer-app"/>
-                  <path d="M304 428L407 398 479 444 443 503 358 486Z" fill="#bf8a38" opacity=".9" class="layer layer-open"/>
+                  <path d="M304 428L407 398 479 444 443 503 358 486Z" fill="#bf8a38" opacity=".9" class="layer layer-open reviewable" data-feature="open-0147" data-class="Área aberta" data-area="12.84"/>
                   <path d="M304 428L407 398 479 444 443 503 358 486Z" fill="none" stroke="#f8bd4c" stroke-width="4" stroke-dasharray="12 9" class="layer layer-open"/>
                   <path d="M413 96L451 142 432 196 382 180 360 132Z" fill="#4b8550" opacity=".8" class="layer layer-native"/>
                 </g>
 
-                <path d="M198 104 L345 75 L380 128 L502 112 L574 62 L667 108 L726 86 L779 168 L756 247 L822 303 L764 376 L698 359 L650 438 L553 459 L492 535 L387 515 L330 451 L239 430 L202 353 L132 306 L170 230 L128 163 Z" fill="none" stroke="#f36b41" stroke-width="5" stroke-linejoin="round" filter="url(#softShadow)"/>
+                <path class="property-boundary" d="M198 104 L345 75 L380 128 L502 112 L574 62 L667 108 L726 86 L779 168 L756 247 L822 303 L764 376 L698 359 L650 438 L553 459 L492 535 L387 515 L330 451 L239 430 L202 353 L132 306 L170 230 L128 163 Z" fill="none" stroke="#f36b41" stroke-width="5" stroke-linejoin="round" filter="url(#softShadow)"/>
                 <path d="M83 284C181 235 253 318 336 281S454 173 552 211 647 307 752 246 879 160 980 202" fill="none" stroke="#7fdaed" stroke-width="5" opacity=".88" class="layer layer-hydro"/>
                 <path d="M83 284C181 235 253 318 336 281S454 173 552 211 647 307 752 246 879 160 980 202" fill="none" stroke="#d9f8ff" stroke-width="1.5" opacity=".9" class="layer layer-hydro"/>
 
@@ -156,8 +161,8 @@
               <div class="donut-row">
                 <div class="donut" aria-label="Distribuição ilustrativa de áreas"><div><strong>1.502</strong><span>hectares</span></div></div>
                 <div class="donut-legend">
-                  <div><i class="native"></i><span>Vegetação nativa</span><b>49,59%</b></div>
-                  <div><i class="open"></i><span>Área aberta*</span><b>44,17%</b></div>
+                  <div><i class="native"></i><span>Vegetação nativa</span><b id="donutNative">49,59%</b></div>
+                  <div><i class="open"></i><span>Área aberta*</span><b id="donutOpen">44,17%</b></div>
                   <div><i class="app"></i><span>APP*</span><b>5,71%</b></div>
                   <div><i class="other"></i><span>Outros</span><b>0,53%</b></div>
                 </div>
@@ -177,17 +182,19 @@
           <section class="panel impact-card">
             <div class="impact-copy"><div class="eyebrow">IMPACTO PERCEBIDO</div><h2>Do trabalho operacional à revisão técnica.</h2><p>Comparação baseada no tempo informado pelo cliente para este tipo de mapa — não representa benchmark universal.</p></div>
             <div class="impact-comparison">
-              <div class="impact-manual"><span>PROCESSO MANUAL INFORMADO</span><strong>3 horas</strong><small>em cenário ideal</small><em>Frequentemente 1–2 dias com interrupções</em></div>
+              <div class="impact-manual"><span>PROCESSO MANUAL INFORMADO</span><strong>3 horas</strong><small>concentrado, em cenário ideal</small><em>Na prática, pode ocupar 1–2 dias com interrupções</em></div>
               <div class="impact-arrow">→</div>
               <div class="impact-auto"><span>DEMO AUTOMATIZADA</span><strong>11 min</strong><small>+ revisão do engenheiro</small><em>O especialista valida. O sistema executa.</em></div>
             </div>
           </section>
 
           <section class="panel outputs-card">
-            <div class="panel-title"><strong>Produtos gerados</strong><span>4 ARQUIVOS</span></div>
+            <div class="panel-title"><strong>Produtos gerados</strong><span>5 FORMATOS</span></div>
             <button class="file-row" data-download="map"><i class="file-icon pdf">PDF</i><span><strong>Mapa_Uso_Cobertura.pdf</strong><small>4,8 MB · layout A3</small></span><em>↓</em></button>
-            <button class="file-row" data-download="qgis"><i class="file-icon qgz">QGZ</i><span><strong>Projeto_QGIS.qgz</strong><small>18,2 MB · camadas organizadas</small></span><em>↓</em></button>
-            <button class="file-row" data-download="full"><i class="file-icon zip">ZIP</i><span><strong>Entrega_Completa.zip</strong><small>27,6 MB · pacote demonstrativo</small></span><em>↓</em></button>
+            <button class="file-row" data-download="qgis"><i class="file-icon qgz">QGS</i><span><strong>Projeto_QGIS.qgs</strong><small>Camadas e simbologia organizadas</small></span><em>↓</em></button>
+            <button class="file-row" data-download="gpkg"><i class="file-icon map">GPKG</i><span><strong>Vetores_Revisados.gpkg</strong><small>GeoPackage demonstrativo</small></span><em>↓</em></button>
+            <button class="file-row" data-download="shp"><i class="file-icon zip">SHP</i><span><strong>Camadas_SHP.zip</strong><small>Pacote de vetores demonstrativo</small></span><em>↓</em></button>
+            <button class="file-row" data-download="full"><i class="file-icon zip">ZIP</i><span><strong>Entrega_Completa.zip</strong><small>Pacote demonstrativo completo</small></span><em>↓</em></button>
           </section>
         </div>
       </section>
@@ -258,8 +265,11 @@
           <div class="new-project-intro"><button class="back-link" data-page-link="overview">← Voltar ao projeto demo</button><div class="brand large"><div class="brand-mark"><span>L</span><span>2</span></div><div><strong>GeoOps</strong><small>POC de fluxo QGIS · por L2</small></div></div><h1>Novo projeto ambiental, sem começar do zero.</h1><p>Envie o limite da propriedade. A demonstração simula a organização dos dados, o processamento geoespacial, o QA e a geração dos produtos.</p><div class="promise-list"><div><span>01</span><p><strong>Dados organizados</strong>KML, SHP ou GeoJSON com validação inicial.</p></div><div><span>02</span><p><strong>Pipeline rastreável</strong>Etapas, alertas e resultados visíveis.</p></div><div><span>03</span><p><strong>Engenheiro no controle</strong>Automação prepara; especialista revisa no QGIS.</p></div></div><div class="new-disclaimer">POC conceitual. Nenhuma integração externa ou análise legal real será executada.</div></div>
           <form class="new-project-form" id="newProjectForm">
             <div class="form-header"><div><span>ETAPA 1 DE 2</span><h2>Dados do projeto</h2><p>Campos preenchidos para acelerar a demonstração.</p></div><span class="demo-tag">DEMO</span></div>
-            <div class="form-grid"><label>Cliente<input name="client" value="Agropecuária Santa Clara Ltda." required></label><label>Propriedade<input name="property" value="Fazenda Santa Clara" required></label><label>Município<input name="city" value="Rio Verde" required></label><label>Estado<select name="state"><option selected>Goiás</option><option>Mato Grosso</option><option>Minas Gerais</option></select></label><label class="full">Tipo de projeto<select name="type"><option selected>Uso e cobertura do solo</option><option>Diagnóstico ambiental</option><option>Regularização ambiental</option><option>Inventário florestal</option></select></label></div>
-            <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Selecionar arquivo geográfico"><input type="file" id="fileInput" accept=".kml,.shp,.zip,.geojson,.json"><div class="upload-icon">↑</div><strong>Arraste o limite da propriedade</strong><p>ou clique para selecionar · KML, SHP compactado ou GeoJSON</p><span id="fileName">limite_fazenda_santa_clara.geojson · 284 KB</span></div>
+            <div class="form-grid"><label>Cliente<input name="client" value="Agropecuária Santa Clara Ltda." required></label><label>Propriedade<input name="property" value="Fazenda Santa Clara" required></label><label>Município<input name="city" value="Rio Verde" required></label><label>Estado<select name="state"><option selected>Goiás</option><option>Mato Grosso</option><option>Minas Gerais</option></select></label><label>Tipo de projeto<select name="type"><option selected>Uso e cobertura do solo</option><option>Diagnóstico ambiental</option><option>Regularização ambiental</option><option>Inventário florestal</option></select></label><label>Data de referência da imagem<input type="date" name="referenceDate" value="2012-05-25" required></label><label class="full">Origem da imagem<select name="imagery"><option selected>Imagem fornecida pelo cliente · demo</option><option>Catálogo de imagens · integração futura</option><option>Ortofoto / drone · integração futura</option></select></label></div>
+            <div class="upload-pair">
+              <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Selecionar arquivo geográfico"><input type="file" id="fileInput" accept=".kml,.shp,.zip,.geojson,.json"><div class="upload-icon">⌁</div><strong>Perímetro da propriedade</strong><p>KML, SHP compactado ou GeoJSON</p><span id="fileName">limite_fazenda.geojson · 284 KB</span></div>
+              <div class="upload-zone" id="imageUploadZone" tabindex="0" role="button" aria-label="Selecionar imagem de referência"><input type="file" id="imageFileInput" accept=".tif,.tiff,.jp2,.png,.jpg,.jpeg"><div class="upload-icon">▧</div><strong>Imagem de referência</strong><p>GeoTIFF, JP2 ou imagem georreferenciada</p><span id="imageFileName">imagem_25-05-2012.tif · DEMO</span></div>
+            </div>
             <label class="consent-row"><input type="checkbox" checked required><span>Entendo que os resultados desta demonstração são ilustrativos e dependem de revisão técnica.</span></label>
             <button type="submit" class="button button-primary button-large button-full">Iniciar processamento demonstrativo →</button>
             <p class="form-security">⌾ Arquivos permanecem apenas nesta simulação local.</p>
@@ -270,7 +280,22 @@
       <section class="page page-processing" id="page-processing">
         <div class="processing-shell">
           <div class="processing-visual">
-            <div class="orbit"><div class="orbit-ring one"></div><div class="orbit-ring two"></div><div class="orbit-map"><span>L2</span><i></i><i></i><i></i></div></div>
+            <div class="scan-stage">
+              <div class="scan-label before">IMAGEM ORIGINAL · 25/05/2012</div>
+              <svg class="scan-map" id="scanMap" viewBox="0 0 640 340" aria-label="Vetorização demonstrativa em processamento">
+                <rect width="640" height="340" fill="#6f7458"/>
+                <path d="M0 50L105 15 201 70 295 21 399 63 504 18 640 73V175L524 139 423 187 327 143 222 191 115 145 0 185Z" fill="#9d9465"/>
+                <path d="M0 262L96 207 194 250 292 188 397 238 488 194 640 239V340H0Z" fill="#31503e"/>
+                <path d="M0 201C81 167 151 232 231 194S348 120 433 165 532 205 640 144" fill="none" stroke="#203c34" stroke-width="31"/>
+                <path class="scan-feature s1" d="M0 201C81 167 151 232 231 194S348 120 433 165 532 205 640 144" fill="none" stroke="#6bd9e5" stroke-width="5"/>
+                <path class="scan-feature s2" d="M82 121L186 67 270 100 360 58 470 88 548 141 508 245 415 222 355 298 242 282 167 245 96 210Z" fill="#16684b" opacity=".9"/>
+                <path class="scan-feature s3" d="M92 126L190 72 267 103 234 178 142 198Z" fill="#c39a42" opacity=".92"/>
+                <path class="scan-feature s4" d="M365 78L470 91 546 144 508 204 417 180Z" fill="#c8bc48" opacity=".85"/>
+                <path class="scan-feature s4" d="M82 121L186 67 270 100 360 58 470 88 548 141 508 245 415 222 355 298 242 282 167 245 96 210Z" fill="none" stroke="#f36b41" stroke-width="5"/>
+              </svg>
+              <div class="scan-line"></div>
+              <div class="scan-detections"><span>Rio</span><span>Vegetação</span><span>Área aberta</span><span>Reserva</span></div>
+            </div>
             <div class="processing-tag"><span class="pulse-dot"></span>PIPELINE EM EXECUÇÃO · DEMONSTRAÇÃO</div>
             <h1>Transformando dados brutos<br>em um projeto pronto para revisão.</h1>
             <p id="processingMessage">Recebendo arquivo da propriedade…</p>
@@ -301,7 +326,7 @@
   <aside class="review-drawer" id="reviewDrawer" aria-hidden="true">
     <div class="drawer-header"><div><span>REVISÃO ASSISTIDA · DEMO</span><h2>Revisar classificação</h2></div><button class="close-button" data-close-drawer>×</button></div>
     <div class="drawer-map"><svg viewBox="0 0 500 260" aria-label="Feição selecionada para revisão"><rect width="500" height="260" fill="#43583f"/><path d="M16 112L107 54 213 84 295 37 414 79 480 155 425 235 301 208 201 240 94 197Z" fill="#177052"/><path d="M126 80L256 56 343 105 301 178 173 184 91 135Z" fill="#bd8c3b" stroke="#ffcf61" stroke-width="5" stroke-dasharray="10 7"/><path d="M8 198C103 164 184 223 275 168S401 100 500 146" fill="none" stroke="#6de0e0" stroke-width="6"/></svg><span>Feição #UC-0147 selecionada</span></div>
-    <div class="drawer-body"><label>Classificação atual<select id="classSelect"><option>Área aberta</option><option>Vegetação nativa</option><option>Reserva Legal</option><option>APP</option><option>Não classificado</option></select></label><div class="drawer-stats"><div><span>Área da feição</span><strong>12,84 ha</strong></div><div><span>Confiança da demo</span><strong>87%</strong></div></div><label>Observação técnica<textarea id="reviewNote" rows="4" placeholder="Registre o motivo da alteração…">Conferir limite com imagem de referência e vistoria de campo.</textarea></label><div class="review-impact"><span>↻</span><p><strong>Recálculo automático</strong>Ao confirmar, o quadro de áreas, mapa e relatório serão atualizados na simulação.</p></div></div>
+    <div class="drawer-body"><label>Classificação atual<select id="classSelect"><option>Área aberta</option><option>Vegetação nativa</option><option>Reserva Legal</option><option>APP</option><option>Não classificado</option></select></label><div class="drawer-stats"><div><span>Área da feição</span><strong id="featureArea">12,84 ha</strong></div><div><span>Confiança da sugestão</span><strong id="featureConfidence">87%</strong></div></div><label>Observação técnica<textarea id="reviewNote" rows="4" placeholder="Registre o motivo da alteração…">Conferir limite com imagem de referência e vistoria de campo.</textarea></label><div class="review-impact"><span>↻</span><p><strong>Recálculo automático</strong>Ao confirmar, o quadro de áreas, mapa e relatório serão atualizados na simulação.</p></div></div>
     <div class="drawer-footer"><button class="button button-secondary" data-close-drawer>Cancelar</button><button class="button button-primary" id="saveReview">Salvar e recalcular</button></div>
   </aside>
 
