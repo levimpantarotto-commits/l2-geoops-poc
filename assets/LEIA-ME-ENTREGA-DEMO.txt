@@ -1,0 +1,18 @@
+L2 GEOOPS — PACOTE DEMONSTRATIVO
+================================
+
+Projeto: Fazenda Santa Clara
+Município: Rio Verde / GO
+Finalidade: demonstração visual e funcional da POC L2 GeoOps.
+
+IMPORTANTE
+- Todos os dados, geometrias, áreas, nomes, documentos e tempos são ilustrativos.
+- Este pacote não representa análise ambiental real.
+- Não utilizar para decisão técnica, jurídica, cadastral ou operacional.
+- A automação proposta depende de fontes, regras e validação do profissional habilitado.
+
+Arquivos incluídos no pacote demonstrativo:
+- Mapa_Uso_Cobertura_DEMO.pdf
+- Projeto_QGIS_DEMO.qgs
+- limite_fazenda_DEMO.geojson
+- LEIA-ME-ENTREGA-DEMO.txt

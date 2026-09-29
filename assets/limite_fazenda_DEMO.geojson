@@ -1,0 +1,15 @@
+{
+  "type": "FeatureCollection",
+  "name": "limite_fazenda_DEMO",
+  "crs": {"type": "name", "properties": {"name": "urn:ogc:def:crs:EPSG::31982"}},
+  "features": [{
+    "type": "Feature",
+    "properties": {
+      "projeto": "L2 GeoOps — Demonstração",
+      "propriedade": "Fazenda Santa Clara",
+      "area_ha": 1502.42,
+      "aviso": "Geometria meramente ilustrativa; não usar em produção."
+    },
+    "geometry": {"type": "Polygon", "coordinates": [[[500000,8000000],[503000,8000800],[506000,7999800],[505200,7996800],[502100,7996200],[499600,7998100],[500000,8000000]]]}
+  }]
+}

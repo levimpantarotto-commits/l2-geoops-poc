@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qgis projectname="L2 GeoOps — Projeto demonstrativo" version="3.34.0">
+  <title>L2 GeoOps — Fazenda Santa Clara (DEMONSTRAÇÃO)</title>
+  <projectCrs><spatialrefsys><authid>EPSG:31982</authid><description>SIRGAS 2000 / UTM zone 22S</description></spatialrefsys></projectCrs>
+  <projectMetadata>
+    <identifier>L2-GEO-DEMO-2026-042</identifier>
+    <title>Fazenda Santa Clara — Uso e cobertura do solo</title>
+    <abstract>Arquivo conceitual gerado pela POC L2 GeoOps. Não contém análise geoespacial real.</abstract>
+    <author>L2 GeoOps — Demonstração</author>
+  </projectMetadata>
+  <layer-tree-group name="L2 GeoOps — DEMONSTRAÇÃO" checked="Qt::Checked" expanded="1">
+    <layer-tree-group name="01_Limites" checked="Qt::Checked" expanded="1"/>
+    <layer-tree-group name="02_Uso_Cobertura" checked="Qt::Checked" expanded="1"/>
+    <layer-tree-group name="03_Ambiental" checked="Qt::Checked" expanded="1"/>
+    <layer-tree-group name="04_Hidrografia" checked="Qt::Checked" expanded="1"/>
+  </layer-tree-group>
+  <properties><L2GeoOps><ambiente type="QString">DEMONSTRAÇÃO</ambiente><aviso type="QString">Dados ilustrativos. Revisão técnica obrigatória.</aviso></L2GeoOps></properties>
+</qgis>
