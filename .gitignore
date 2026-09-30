@@ -1,0 +1,4 @@
+operational/runs/
+operational/data/forestry/*.tif
+__pycache__/
+*.pyc

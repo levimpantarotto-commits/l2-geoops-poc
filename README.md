@@ -1,5 +1,21 @@
 # GeoOps — estúdio de mapas e cérebro do escritório
 
+## Caso brasileiro público — v9
+
+Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=9 . O endereço principal agora abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+
+1. Comece pela imagem; clique em processar/carregar cobertura para revelar os vetores já preparados no QGIS.
+2. Ligue/desligue camadas e classes, ajuste o preenchimento e selecione uma feição para revisar sua classificação.
+3. A tabela reagrupará as áreas geométricas pré-calculadas. O navegador não executa nova medição QGIS nem valida juridicamente as classes.
+4. Abra os entregáveis: PDF, QGIS, GPKG e SHP são do **caso-base pré-gerado**, não incorporam alterações da sessão. O GeoJSON de revisão separado registra as classes alteradas no navegador.
+5. Explore o cérebro e a sala 3D demonstrativos, sem conexão a acervo ou agentes privados.
+
+GitHub Pages hospeda somente a demonstração estática. Upload, edição de vértices e nova geração GIS requerem o aplicativo local com QGIS. Não há backend público, login, envio de dados, APP/RL delimitadas ou declaração de regularidade. Recarregar descarta a revisão de classes da sessão. A resolução de 30 m não mostra todos os rios/nascentes.
+
+## Cenário ilustrativo anterior — v5
+
+O cenário antigo continua em `index.html?legacy=1#mapa`; as instruções e limites abaixo são **somente desse cenário**, não do caso brasileiro.
+
 POC demonstrativa em português. HTML, CSS e JavaScript, sem backend e sem chaves de API. Marca L2 discreta.
 
 ## Abrir e apresentar

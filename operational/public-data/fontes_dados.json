@@ -1,0 +1,40 @@
+{
+  "id": "brazil-botucatu",
+  "title": "Botucatu/SP · estudo demonstrativo",
+  "country": "Brasil",
+  "boundary": "Fictício, criado exclusivamente para demonstração. Não é limite de imóvel ou CAR.",
+  "imageDate": "2023-09-11",
+  "coverageYear": 2023,
+  "coverageCollection": 9,
+  "imageSource": "Contains modified Copernicus Sentinel data (2023), via Element 84 / AWS Open Data",
+  "coverageSource": "MapBiomas Brasil — Coleção 9, cobertura e uso da terra 2023, resolução nominal 30 m",
+  "classificationMethod": "Recorte e vetorização da classificação pública, não inferência da imagem exibida.",
+  "assets": {
+    "sentinel_rgb.tif": {
+      "url": "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/22/K/GV/2023/9/S2A_22KGV_20230911_0_L2A/TCI.tif",
+      "sha256": "767024b5efd558ec4af48784088e27ff599c1fca204fba27c6ef652bdcbcc178",
+      "bytes": 1032804,
+      "width": 626,
+      "height": 565
+    },
+    "mapbiomas_2023.tif": {
+      "url": "https://storage.googleapis.com/mapbiomas-public/initiatives/brasil/collection_9/lclu/coverage/brasil_coverage_2023.tif",
+      "sha256": "52b5bd26c6c80e491386c30c78fd91952176e42a6fecb41c5b674caedcf2ca43",
+      "bytes": 7472,
+      "width": 224,
+      "height": 187
+    }
+  },
+  "referenceBoundsWgs84": [
+    -48.49,
+    -22.96,
+    -48.43,
+    -23.01
+  ],
+  "sources": [
+    "https://servicodados.ibge.gov.br/api/v3/malhas/municipios/3507506?formato=application/vnd.geo+json&qualidade=minima",
+    "https://registry.opendata.aws/sentinel-2-l2a-cogs/",
+    "https://forum.mapbiomas.org/t/download-landcover-usage-collection-9-for-the-year-2023/1002",
+    "https://brasil.mapbiomas.org/wp-content/uploads/sites/4/2024/08/Legenda-Colecao-9-LEGEND-CODE.pdf"
+  ]
+}

@@ -1,0 +1,48 @@
+/* Real operations inside the previously approved GeoOps shell. */
+.purpose-strip{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid #dce3dc;padding:8px 0;font-size:10px;color:#687962}
+.purpose-strip strong{color:#30452c;margin-right:10px}
+.dataset-context{display:flex;flex-wrap:wrap;gap:5px 12px;font-size:9px;line-height:1.6;color:#887951;margin-bottom:12px}
+.dataset-context strong{color:#6f704f}
+.regularization-scope{margin-bottom:20px;border-left:3px solid #b6c29b}
+.regularization-scope h2{font-size:21px}
+.scope-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.scope-grid strong{font-size:12px}
+.scope-grid p{font-size:11px}
+.scope-grid small{font-size:8px;letter-spacing:.7px;color:#a17e3e}
+#runTime.running{color:#276847;font-weight:600}
+.dataset-context{align-items:center}
+.dataset-context .textbutton{margin-left:auto;font-size:10px;color:#497c42;padding:3px 0}
+.class-row{background:transparent;border:0;width:100%;text-align:left;cursor:pointer;padding:0}
+.class-row.muted{opacity:.35;text-decoration:line-through}
+.swatch.boundary{background:transparent;border:2px dashed #b5a66b}
+.swatch.aerial{background:linear-gradient(40deg,#31572c,#ad9165)}
+#caseDialog{max-width:760px}
+.explain-comparison{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+.explain-comparison>div{padding:18px;background:#f1f4eb;border-radius:7px}
+.explain-comparison small{font-size:8px;letter-spacing:1px;color:#6e8265}
+.explain-comparison h3{font:600 17px/1.5 Manrope,sans-serif;margin-top:10px}
+.case-subtitle{font:600 17px Manrope,sans-serif;margin-top:16px}
+#viewCaseMap{margin-top:24px}
+@media(max-width:600px){.explain-comparison{grid-template-columns:1fr}}
+@media(max-width:700px){.purpose-strip{align-items:flex-start}.purpose-strip span{line-height:1.7}.purpose-strip strong{display:block}.scope-grid{grid-template-columns:1fr}}
+.embedded-workspace body{background:transparent;color:#30452c}
+.embedded-workspace .top,.embedded-workspace footer{display:none}
+.embedded-workspace main{max-width:none;padding:0}
+.embedded-workspace .heading{margin-bottom:24px}
+.embedded-workspace h1{font-size:32px;letter-spacing:-1.2px;font-weight:600}
+.embedded-workspace .heading p{color:#859477}
+.embedded-workspace .source{border-radius:7px;background:#fff}
+.embedded-workspace .workflow{margin-top:18px;margin-bottom:10px}
+.embedded-workspace .workspace{border-radius:7px;grid-template-columns:200px minmax(0,1fr) 250px}
+.embedded-workspace .button{border-radius:5px;font-size:11px}
+.embedded-workspace .button.primary{background:#497c42;border-color:#497c42}
+.embedded-workspace #gisMap{height:560px;min-height:560px;flex:1}
+.embedded-workspace .map-toolbar{height:56px}
+.embedded-workspace .job-panel{position:sticky;bottom:18px;left:auto;transform:none;margin:18px auto 0;width:max-content;max-width:96%;min-width:0}
+.embedded-workspace #toast{position:sticky;bottom:18px;left:auto;margin:12px auto 0;transform:none;display:none;width:max-content;max-width:95%}
+.embedded-workspace #toast.show{display:block}
+.embedded-workspace .preview img{max-height:1100px;object-fit:contain}
+@media(min-width:1700px){.embedded-workspace .workspace{grid-template-columns:210px minmax(0,1fr) 260px}}
+@media(max-width:1200px){.embedded-workspace .workspace{grid-template-columns:178px minmax(0,1fr) 225px}.embedded-workspace .heading{display:block}.embedded-workspace .actions{justify-content:flex-start;margin-top:18px}}
+@media(max-width:900px){.embedded-workspace .workspace{grid-template-columns:175px minmax(0,1fr)}.embedded-workspace .review{grid-column:1/-1}.embedded-workspace #gisMap{height:500px;min-height:500px}}
+@media(max-width:560px){.embedded-workspace .workspace{grid-template-columns:1fr}.embedded-workspace #gisMap{height:430px;min-height:430px}.embedded-workspace h1{font-size:28px}}
