@@ -4,7 +4,7 @@ POC demonstrativa em português. HTML, CSS e JavaScript, sem backend e sem chave
 
 ## Abrir e apresentar
 
-1. Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=4 no Chrome/Edge. Para rodar o ZIP, extraia a pasta, abra um terminal nela e execute `python -m http.server 8765` (requer Python); acesse http://localhost:8765. Use um servidor local: abrir por `file://` não suporta os módulos 3D. Fontes usam Google Fonts com alternativa local.
+1. Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=5 no Chrome/Edge. Para rodar o ZIP, extraia a pasta, abra um terminal nela e execute `python -m http.server 8765` (requer Python); acesse http://localhost:8765. Use um servidor local: abrir por `file://` não suporta os módulos 3D. Fontes usam Google Fonts com alternativa local.
 2. O mapa já abre com os vetores do exemplo. Ligue/desligue as seis camadas e ajuste **Preenchimento**. Para encenar a detecção, escolha **Imagem** e clique **Processar imagem**. A animação de aproximadamente 5 segundos é encenada, não um benchmark de análise real.
 3. Clique **Revisar uma área**, troque para vegetação nativa e confirme. Observe o mapa, os hectares e os percentuais mudarem juntos. Também é possível selecionar as feições diretamente no mapa.
 4. Clique **Gerar mapa final**. O quadro de áreas acompanha a revisão. **Baixar mapa PDF** abre a impressão: escolha “Salvar como PDF”, papel A3, paisagem, sem cabeçalho/rodapé do navegador. SVG, CSV e JSON representam a sessão atual.
