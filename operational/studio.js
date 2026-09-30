@@ -2,7 +2,7 @@
 (() => {'use strict';
  const $=id=>document.getElementById(id), frame=$('workspaceFrame');
  const publicMode=new URLSearchParams(location.search).get('demo')==='public'||location.hostname.endsWith('.github.io');
- frame.src=frame.dataset.src+(publicMode?'&demo=public&v=9':'');
+ frame.src=frame.dataset.src+(publicMode?'&demo=public&v=10':'');
  if(publicMode){
   $('studioInfo').querySelector('h2').textContent='Caso brasileiro · demonstração pública';
   const paragraphs=$('studioInfo').querySelectorAll('p');

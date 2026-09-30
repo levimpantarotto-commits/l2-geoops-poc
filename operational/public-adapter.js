@@ -10,6 +10,8 @@
       const response = await fetch('public-data/result.json', {cache: 'no-store'});
       if (!response.ok) throw Error('Não foi possível carregar o caso público pré-processado.');
       baseResult = await response.json();
+      // Cada visita começa sem uma revisão feita pelo visitante.
+      (baseResult.features?.features || []).forEach(feature => { feature.properties.reviewed = false; });
       baseResult.downloads ||= {};
       ['base.png', 'mapa.png', 'mapa.pdf', 'projeto.gpkg', 'shapefile.zip', 'GeoOps_Projeto_Completo.zip', 'vetores.geojson', 'fontes_dados.json'].forEach(name => {
         baseResult.downloads[name] ||= `public-data/${name}`;
@@ -54,7 +56,7 @@
       if (operation === 'prepare') {
         const prepared = clone(original);
         prepared.features = {type: 'FeatureCollection', features: []};
-        prepared.summary = {...prepared.summary, count: 0, valid: 0, totalHa: 0};
+        prepared.summary = {...prepared.summary, count: 0, valid: 0};
         prepared.qa = [];
         return prepared;
       }
@@ -70,6 +72,8 @@
       document.getElementById('retryConnection').hidden = true;
       document.getElementById('connectionError').hidden = true;
       document.getElementById('engineBadge').textContent = 'DEMONSTRAÇÃO PÚBLICA · dados estáticos';
+      document.getElementById('runClassify').textContent = '✧ Mostrar cobertura no mapa';
+      document.getElementById('fillOpacity').title = 'Disponível depois de mostrar a cobertura no mapa';
       document.getElementById('exportAll').textContent = 'Ver arquivos do caso-base ↗';
       document.querySelector('#featureForm button[type="submit"]').textContent = 'Salvar revisão de classe';
       document.getElementById('datasetNotice').textContent = 'Caso público já processado. Não envia arquivos, não conecta ao ambiente local e não mede novamente a área.';
@@ -80,6 +84,7 @@
       document.querySelector('footer span:last-child').textContent = 'Caso público pré-processado · revisão ilustrativa · sem conexão local';
       document.querySelector('[data-tab="qa"]').textContent = 'QA e limites';
       document.querySelector('#stepVectors small').textContent = 'Resultado pré-processado · MapBiomas 30 m';
+      document.querySelector('#stepVectors span').firstChild.textContent = 'Mostrar cobertura';
       document.querySelector('#stepReview small').textContent = 'Classe e marcação · contorno preservado';
       document.querySelector('#stepExport small').textContent = 'Arquivos pré-gerados do caso-base';
       document.querySelector('#tab-qa .qa-grid article:nth-child(2) h2').textContent = 'Leitura desta demonstração.';
@@ -90,6 +95,28 @@
       document.querySelector('#tab-exports aside h2 + p').textContent = 'Feições, classes e áreas do resultado pré-processado original; não incluem revisões feitas no navegador.';
       const method = document.querySelector('#methodDialog p:nth-of-type(5)');
       method.textContent = 'Nesta demonstração pública, o resultado já foi processado. Você pode reclassificar feições e marcar a revisão no navegador; os contornos, áreas e arquivos do caso-base não mudam. APP/RL e regularidade ambiental não são avaliadas.';
+      const actions = {
+        stepData: () => { document.querySelector('[data-tab="map"]').click(); document.getElementById('fitMap').click(); },
+        stepVectors: () => document.getElementById('runClassify').click(),
+        stepReview: async () => {
+          const classify = document.getElementById('runClassify');
+          if (document.getElementById('featureCount').textContent === '0') await classify.onclick();
+          document.querySelector('[data-tab="map"]').click();
+          document.getElementById('selectFirst').click();
+        },
+        stepExport: () => document.getElementById('exportAll').click()
+      };
+      Object.entries(actions).forEach(([id, action]) => {
+        const step = document.getElementById(id);
+        step.setAttribute('role', 'button');
+        step.tabIndex = 0;
+        step.addEventListener('click', action);
+        step.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          action();
+        });
+      });
     },
     renderLabels(data) {
       if (!enabled) return;
