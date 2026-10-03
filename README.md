@@ -1,8 +1,10 @@
 # GeoOps — estúdio de mapas e cérebro do escritório
 
-## Caso brasileiro público — v12
+## Caso brasileiro público — v13
 
-Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=12 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=13 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+
+Para mostrar o mapa em composição semelhante à referência, use **⛶ Apresentar mapa** ou abra diretamente `operational/index.html?demo=public&present=1`. A visualização ocupa a tela, mostra norte, escala, legenda e quadro de áreas, permite abrir camadas e clicar numa feição para revisar. É uma composição do caso fictício de Botucatu, **não** a reprodução georreferenciada do mapa de 2012; APP, ARL e área consolidada continuam pendentes. A POC web não possui catálogo mundial de imagens: localização/data deste exemplo são fixas. O QGIS local também não busca automaticamente imagem por propriedade nesta versão.
 
 A aba **Motor geográfico** explica as duas camadas do produto (aplicação e PyQGIS local), a sequência efetivamente implementada e as etapas que ainda dependem dos arquivos e critérios do engenheiro. No GitHub Pages o motor não roda: as feições e os arquivos técnicos são pré-processados.
 

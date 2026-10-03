@@ -22,6 +22,41 @@
 .map-legend>strong{display:block;font:700 10px Manrope,sans-serif;margin-bottom:8px;color:#2b4735}
 .map-legend>div{display:flex;align-items:center;gap:8px;margin:5px 0}
 .map-legend button{border:0;background:none;color:#457b52;font-size:9px;font-weight:700;text-align:left;padding:7px 0 0;cursor:pointer}
+.map-toolbar-actions{display:flex;align-items:center;gap:5px}
+.map-toolbar-actions .textbutton{white-space:nowrap}
+.map-presentation{overflow:hidden}
+.map-presentation main{padding:0;max-width:none}
+.map-presentation .top,.map-presentation .heading,.map-presentation .purpose-strip,.map-presentation .dataset-context,.map-presentation .connectionError,.map-presentation .source,.map-presentation .workflow,.map-presentation .tabs,.map-presentation .attributes,.map-presentation .review,.map-presentation footer{display:none!important}
+.map-presentation #tab-map{display:block!important}
+.map-presentation .workspace{display:block;border:0;border-radius:0}
+.map-presentation .map-wrap{position:fixed;inset:0;z-index:2000;background:#384437;display:block}
+.map-presentation .map-toolbar,.map-presentation .map-footer{display:none}
+.map-presentation #gisMap{height:100vh!important;min-height:0!important;width:100vw;background:#384437}
+.map-presentation .map-legend{left:auto;right:20px;bottom:24px;width:220px;z-index:800;background:#fffffff2}
+.map-presentation .leaflet-control-scale{margin-left:24px!important;margin-bottom:30px!important}
+.map-presentation .leaflet-control-zoom{margin-right:258px!important;margin-bottom:25px!important}
+.map-presentation .layers{display:none!important}
+.map-presentation.presentation-layers-open .layers{display:block!important;position:fixed;z-index:2300;top:83px;left:18px;width:265px;max-height:calc(100vh - 100px);overflow:auto;background:#fffffff4;border:1px solid #cdd9cd;border-radius:9px;box-shadow:0 12px 40px #173c2f33;backdrop-filter:blur(10px)}
+#presentationChrome{position:absolute;inset:0;z-index:750;pointer-events:none}
+.presentation-top{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:min(720px,calc(100% - 38px));display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 17px;background:#fffffff2;border:1px solid #cdd7cf;border-radius:6px;box-shadow:0 5px 26px #14342327}
+.presentation-top span{display:block;color:#546951;font-size:9px;font-weight:800;letter-spacing:1.2px}
+.presentation-top strong{display:block;color:#203e30;font:700 17px/1.2 Manrope,sans-serif;margin-top:4px}
+.presentation-buttons{display:flex;gap:7px;pointer-events:auto;flex:none}
+.presentation-buttons button{padding:8px 10px;background:#f5f8f1;border:1px solid #d2dfd3;border-radius:4px;color:#2c5a42;font-size:10px;font-weight:700;cursor:pointer}
+.presentation-north{position:absolute;top:96px;right:25px;display:flex;flex-direction:column;align-items:center;line-height:1;color:#152921;text-shadow:0 1px #fff,-1px 0 #fff,1px 0 #fff}
+.presentation-north b{font-size:35px}.presentation-north span{font-size:13px;font-weight:800}
+.presentation-selection{position:absolute;top:170px;right:22px;width:230px;padding:13px 15px;background:#fffffff2;border:1px solid #cbd7cc;border-radius:6px;box-shadow:0 5px 22px #1e3e2f2c;pointer-events:auto}
+.presentation-selection small{display:block;font-size:8px;font-weight:800;letter-spacing:.8px;color:#68796b}
+.presentation-selection strong,.presentation-selection span,.presentation-selection b{display:block;margin-top:7px}
+.presentation-selection strong{font-size:12px}.presentation-selection span{font-size:10px;color:#587261}.presentation-selection b{font-size:14px}
+.presentation-selection button{margin-top:11px;border:0;background:#e5f0e3;color:#285d43;padding:8px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer}
+.presentation-areas{position:absolute;left:24px;bottom:74px;width:300px;padding:13px 15px;background:#fffffff2;border:1px solid #cbd7cc;border-radius:5px;box-shadow:0 5px 22px #1e3e2f2c;color:#2b4234}
+.presentation-areas>strong{font-size:9px;letter-spacing:.8px}
+.presentation-areas table{width:100%;margin-top:7px;border-collapse:collapse;font-size:10px}
+.presentation-areas th,.presentation-areas td{padding:5px 2px;border-bottom:1px solid #dde6db;text-align:left}
+.presentation-areas th:nth-child(n+2),.presentation-areas td:nth-child(n+2){text-align:right}
+.presentation-areas tr:last-child td{font-weight:800;border-bottom:0}
+.presentation-areas small{display:block;margin-top:6px;font-size:8px;line-height:1.4;color:#8a6c34}
 .legend-fill,.legend-line{width:17px;height:13px;display:inline-block;flex:none;border:1px solid #aab8ad;border-radius:2px}
 .legend-line{height:0;border:0;border-bottom:3px solid;margin:6px 0}
 .boundary-line{border-color:#e23d3a}
@@ -70,6 +105,7 @@
 @media(max-width:900px){.engine-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:1050px){.target-grid,#targetDialog .target-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.purpose-strip{flex-wrap:wrap}.purpose-actions{margin-left:auto}}
 @media(max-width:560px){.map-legend{width:165px;padding:9px;bottom:27px;left:8px}.map-legend>div{margin:3px 0}.purpose-actions{width:100%;justify-content:space-between;gap:2px}.purpose-actions .textbutton{font-size:9px;padding:4px}.target-grid,#targetDialog .target-grid,.engine-duo,.engine-steps{grid-template-columns:1fr}.engine-steps>div{min-height:0}}
+@media(max-width:700px){.presentation-top{align-items:flex-start}.presentation-top strong{font-size:12px}.presentation-top span{font-size:7px}.presentation-buttons button{padding:6px;font-size:9px}.presentation-north{top:90px;right:14px}.presentation-north b{font-size:30px}.presentation-selection{top:140px;right:10px;width:170px;padding:9px}.presentation-areas{left:10px;bottom:70px;width:215px;padding:9px}.presentation-areas table{font-size:8px}.map-presentation .map-legend{right:10px;bottom:70px;width:145px;font-size:8px}.map-presentation .leaflet-control-zoom{margin-right:10px!important;margin-bottom:8px!important}.map-presentation .leaflet-control-scale{margin-left:11px!important;margin-bottom:23px!important}.map-presentation.presentation-layers-open .layers{top:75px;left:10px;width:calc(100vw - 20px);max-height:42vh}}
 .embedded-workspace body{background:transparent;color:#30452c}
 .embedded-workspace .top,.embedded-workspace footer{display:none}
 .embedded-workspace main{max-width:none;padding:0}
