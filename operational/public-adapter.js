@@ -92,7 +92,7 @@
       document.querySelector('#tab-exports .preview h2').textContent = 'Prévia do caso-base.';
       document.querySelector('#previewEmpty').innerHTML = '<p>Abra os arquivos pré-gerados do caso-base.</p><p>Revisões feitas aqui não alteram esta prévia nem os arquivos técnicos.</p>';
       document.querySelector('#tab-exports aside h2').textContent = 'Arquivos do caso-base.';
-      document.querySelector('#tab-exports aside h2 + p').textContent = 'Feições, classes e áreas do resultado pré-processado original; não incluem revisões feitas no navegador.';
+      document.querySelector('#tab-exports aside h2 + p').textContent = 'Arquivos pré-gerados da cobertura 2023 no limite fictício de Botucatu. Ainda não incluem APP, AVN-DESC-APP, ARL ou área consolidada do mapa enviado, nem revisões feitas no navegador.';
       const method = document.querySelector('#methodDialog p:nth-of-type(5)');
       method.textContent = 'Nesta demonstração pública, o resultado já foi processado. Você pode reclassificar feições e marcar a revisão no navegador; os contornos, áreas e arquivos do caso-base não mudam. APP/RL e regularidade ambiental não são avaliadas.';
       const actions = {

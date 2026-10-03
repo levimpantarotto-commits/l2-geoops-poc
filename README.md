@@ -1,8 +1,10 @@
 # GeoOps — estúdio de mapas e cérebro do escritório
 
-## Caso brasileiro público — v10
+## Caso brasileiro público — v11
 
-Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=10 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=11 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+
+O mapa interativo agora usa limite vermelho contínuo, pontos verdes na vegetação mapeada e hachuras amarelas no uso agropecuário. A legenda **Padrão do mapa enviado** e a aba **QA e limites** mostram RIO_ATE_10, APP, AVN-DESC-APP, ARL e AREA_CONSOLIDADA como especificação visual e pendências — sem desenhar nem calcular essas camadas para Botucatu. A hachura amarela deste exemplo representa **uso agropecuário em 2023**, não comprova **área rural consolidada**. O PDF/QGIS/GPKG/SHP existentes continuam sendo os arquivos originais do caso-base e não incorporam a nova simbologia do navegador.
 
 1. Comece pela imagem; marque **Cobertura do solo**, clique em **Mostrar cobertura** na etapa 02 ou use o botão superior para revelar os vetores já preparados no QGIS. As quatro etapas numeradas são clicáveis.
 2. Ligue/desligue camadas e classes, ajuste o preenchimento e selecione uma feição para revisar sua classificação.
