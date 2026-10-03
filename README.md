@@ -1,8 +1,10 @@
 # GeoOps — estúdio de mapas e cérebro do escritório
 
-## Caso brasileiro público — v11
+## Caso brasileiro público — v12
 
-Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=11 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=12 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+
+A aba **Motor geográfico** explica as duas camadas do produto (aplicação e PyQGIS local), a sequência efetivamente implementada e as etapas que ainda dependem dos arquivos e critérios do engenheiro. No GitHub Pages o motor não roda: as feições e os arquivos técnicos são pré-processados.
 
 O mapa interativo agora usa limite vermelho contínuo, pontos verdes na vegetação mapeada e hachuras amarelas no uso agropecuário. A legenda **Padrão do mapa enviado** e a aba **QA e limites** mostram RIO_ATE_10, APP, AVN-DESC-APP, ARL e AREA_CONSOLIDADA como especificação visual e pendências — sem desenhar nem calcular essas camadas para Botucatu. A hachura amarela deste exemplo representa **uso agropecuário em 2023**, não comprova **área rural consolidada**. O PDF/QGIS/GPKG/SHP existentes continuam sendo os arquivos originais do caso-base e não incorporam a nova simbologia do navegador.
 
