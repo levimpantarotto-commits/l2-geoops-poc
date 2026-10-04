@@ -72,8 +72,14 @@
       document.getElementById('retryConnection').hidden = true;
       document.getElementById('connectionError').hidden = true;
       document.getElementById('engineBadge').textContent = 'DEMONSTRAÇÃO PÚBLICA · dados estáticos';
-      document.getElementById('runClassify').textContent = '✧ Exibir análise automática';
-      document.getElementById('staticPlate').hidden = false;
+      document.getElementById('runClassify').textContent = '↺ Mostrar vetores no mapa';
+      // A prancha é um entregável, não uma segunda tela necessária para ver o resultado.
+      document.getElementById('staticPlate').hidden = true;
+      document.querySelector('.heading h1').textContent = 'Mapa automático · Botucatu/SP';
+      document.querySelector('.heading p').textContent = 'As cinco camadas de estudo já aparecem no mapa abaixo. Clique nas feições para inspecionar e revisar.';
+      document.getElementById('caseReading').textContent = 'O mapa já abre com a imagem real, o limite fictício e cinco camadas candidatas traçadas. Você pode ligar, desligar e inspecionar cada uma sem clicar em Processar.';
+      document.querySelector('.review .section-title h2').textContent = 'Revisão dos vetores';
+      document.querySelector('#manualWorkspace .section-title h2').textContent = 'Ajustes manuais · opcionais';
       document.getElementById('fillOpacity').title = 'Disponível depois de mostrar a cobertura no mapa';
       document.getElementById('exportAll').textContent = 'Ver arquivos do caso-base ↗';
       document.querySelector('#featureForm button[type="submit"]').textContent = 'Salvar revisão de classe';
