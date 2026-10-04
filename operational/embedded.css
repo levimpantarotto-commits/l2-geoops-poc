@@ -22,6 +22,21 @@
 .map-legend>strong{display:block;font:700 10px Manrope,sans-serif;margin-bottom:8px;color:#2b4735}
 .map-legend>div{display:flex;align-items:center;gap:8px;margin:5px 0}
 .map-legend button{border:0;background:none;color:#457b52;font-size:9px;font-weight:700;text-align:left;padding:7px 0 0;cursor:pointer}
+.auto-legend:not(:empty){border-top:1px solid #dce5d8;margin-top:7px;padding-top:5px}
+.auto-legend>div{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:9px}
+.auto-workspace{border:1px solid #bcd1c1;background:linear-gradient(160deg,#eff6ef,#f8faf5);border-radius:8px;padding:14px 11px;margin-top:3px;box-shadow:0 8px 24px #295e3210}
+.auto-workspace .section-title h2{font-size:13px}.auto-workspace .section-title span{font-size:8px;color:#267249}
+.auto-workspace .subtle{font-size:9px;line-height:1.55;margin:9px 0}
+.auto-actions{display:flex;gap:5px;margin:11px 0}.auto-actions .button{font-size:9px;padding:8px 6px;min-height:31px;flex:1;white-space:normal}
+.auto-rows{border-top:1px solid #d9e7da;border-bottom:1px solid #d9e7da;padding:4px 0;max-height:265px;overflow:auto}
+.auto-row{display:flex;align-items:center;gap:7px;width:100%;min-height:42px;border:1px solid transparent;border-radius:5px;background:transparent;text-align:left;padding:5px 4px;cursor:pointer;color:#294333}
+.auto-row:hover,.auto-row.on{background:#e4f1e3;border-color:#cfe4ce}.auto-row:not(.on){opacity:.53}
+.auto-row>span{flex:1;min-width:0}.auto-row b{display:block;font-size:9px}.auto-row small{display:block;font-size:8px;color:#61776a;margin-top:2px;line-height:1.3}
+.auto-row>strong{font-size:9px;white-space:nowrap}.auto-row i{flex:none}
+.auto-selected{border-left:3px solid #63a87a;padding:4px 0 4px 9px;margin:10px 0}.auto-selected strong,.auto-selected span{display:block;font-size:9px}.auto-selected span{color:#5c7865;margin-top:4px}.auto-selected p{font-size:9px;line-height:1.45;margin:5px 0 0;color:#965c3d}
+.auto-other{padding:10px 0;border-bottom:1px solid #d9e7da}.auto-other>b{display:block;font-size:9px;margin-bottom:7px}.auto-other>span{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:9px;color:#61776a}.auto-other>span strong{font-weight:700;color:#294333}.auto-other>small{display:block;margin-top:6px;font-size:8px;line-height:1.45;color:#8a6c34}
+.auto-footnote{color:#6a775b!important}.auto-download{font-size:9px;white-space:normal;margin-top:7px}
+.presentation-auto{border-top:1px solid #d6e2d5;margin-top:7px;padding-top:7px}.presentation-auto b{display:block;font-size:8px;letter-spacing:.5px;color:#3c674a;margin-bottom:5px}.presentation-auto span{display:flex;justify-content:space-between;gap:7px;font-size:8px;margin-top:3px}.presentation-auto strong{font-size:8px}.presentation-auto small{display:block;font-size:8px;color:#7e6b4a;margin-top:5px}
 .manual-legend:not(:empty){border-top:1px solid #dce5d8;margin-top:7px;padding-top:5px}
 .manual-legend>div{display:flex;align-items:center;gap:8px;margin:5px 0}
 .map-legend.manual-only>div:not(.manual-legend){display:none}
@@ -144,7 +159,10 @@
 .embedded-workspace .workspace{border-radius:7px;grid-template-columns:200px minmax(0,1fr) 250px}
 .embedded-workspace .button{border-radius:5px;font-size:11px}
 .embedded-workspace .button.primary{background:#497c42;border-color:#497c42}
-.embedded-workspace #gisMap{height:560px;min-height:560px;flex:1}
+.embedded-workspace #gisMap{height:650px;min-height:650px;flex:0 0 650px}
+.embedded-workspace .map-wrap{align-self:start}
+.embedded-workspace .review{align-self:start;max-height:760px;overflow-y:auto}
+.map-legend.auto-mode>div:nth-of-type(2),.map-legend.auto-mode>div:nth-of-type(3),.map-legend.auto-mode>div:nth-of-type(4){display:none}
 .embedded-workspace .map-toolbar{height:56px}
 .embedded-workspace .job-panel{position:sticky;bottom:18px;left:auto;transform:none;margin:18px auto 0;width:max-content;max-width:96%;min-width:0}
 .embedded-workspace #toast{position:sticky;bottom:18px;left:auto;margin:12px auto 0;transform:none;display:none;width:max-content;max-width:95%}
@@ -152,5 +170,5 @@
 .embedded-workspace .preview img{max-height:1100px;object-fit:contain}
 @media(min-width:1700px){.embedded-workspace .workspace{grid-template-columns:210px minmax(0,1fr) 260px}}
 @media(max-width:1200px){.embedded-workspace .workspace{grid-template-columns:178px minmax(0,1fr) 225px}.embedded-workspace .heading{display:block}.embedded-workspace .actions{justify-content:flex-start;margin-top:18px}}
-@media(max-width:900px){.embedded-workspace .workspace{grid-template-columns:175px minmax(0,1fr)}.embedded-workspace .review{grid-column:1/-1}.embedded-workspace #gisMap{height:500px;min-height:500px}}
-@media(max-width:560px){.embedded-workspace .workspace{grid-template-columns:1fr}.embedded-workspace #gisMap{height:430px;min-height:430px}.embedded-workspace h1{font-size:28px}}
+@media(max-width:900px){.embedded-workspace .workspace{grid-template-columns:175px minmax(0,1fr)}.embedded-workspace .review{grid-column:1/-1;max-height:680px}.embedded-workspace #gisMap{height:500px;min-height:500px;flex-basis:500px}}
+@media(max-width:560px){.embedded-workspace .workspace{grid-template-columns:1fr}.embedded-workspace #gisMap{height:430px;min-height:430px;flex-basis:430px}.embedded-workspace h1{font-size:28px}}

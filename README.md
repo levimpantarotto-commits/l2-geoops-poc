@@ -1,6 +1,18 @@
 # GeoOps — estúdio de mapas e cérebro do escritório
 
-## Caso brasileiro público — v14
+## Caso brasileiro público — v15 (atual)
+
+Abra [o aplicativo](https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=15#mapa). Ele já carrega **automaticamente** um estudo ilustrativo de Botucatu/SP, sem clicar em “Criar traçado”. A imagem Sentinel-2 (11/09/2023) e a classificação MapBiomas Brasil (2008 e 2023) são dados públicos; o curso d’água de referência vem do OpenStreetMap. O perímetro é **fictício** e não corresponde a um imóvel ou CAR real. Fontes, coordenadas e checksums: `operational/public-data/fontes_dados.json`.
+
+O processamento reproduzível está em `operational/automatic_case.py`: recorte dos dados, comparação 2008/2023, buffer geométrico do eixo do Rio Pardo, diferença e interseção feitos com PyQGIS. O site público apresenta o resultado **pré-calculado** em `operational/public-data/analise-automatica.json`. Ele não executa QGIS no servidor, não analisa um novo imóvel e não envia arquivos. A prancha `operational/public-data/mapa_analise_automatica.png` reúne todas as camadas candidatas e foi renderizada com `operational/render_automatic_map.py`.
+
+As cinco camadas exibidas são: RIO_ATE_10 (**eixo do rio; largura não verificada**), APP (**faixa geométrica de estudo; não delimitação legal**), AVN-DESC-APP (**vegetação mapeada fora dessa faixa**), ARL (**proposta ilustrativa; não Reserva Legal declarada**) e AREA_CONSOLIDADA (**indício de uso persistente 2008/2023; não prova de ocupação anterior a 22/07/2008**). Cerrado e floresta mapeados aparecem no quadro; AUAS e utilidade pública ficam como “não avaliado”, não como zero. As áreas se sobrepõem e não devem ser somadas. Nenhuma camada é decisão de regularidade ambiental. APP, ARL e área rural consolidada exigem documentos, enquadramento normativo e revisão do engenheiro.
+
+Para apresentar: abra o mapa; use **Imagem** para esconder os vetores e **Imagem + vetores** para revelar o estudo. Clique nas cinco camadas da análise para ligar/desligar e ver fonte, medida e ressalva. Use **Apresentar mapa** para a tela cheia e **Entregáveis** para baixar a prancha PNG e o GeoJSON candidato. **Ajustar traçado** é opcional, para rascunhos do técnico — não é pré-requisito. PDF, projeto QGIS, GeoPackage e SHP disponíveis são **do caso-base de cobertura**, não contêm as cinco camadas candidatas. Importação de imóvel e geração desses formatos com a análise automática exigem integração adicional no aplicativo local.
+
+Para rodar localmente, sirva a pasta com um servidor HTTP simples (`python -m http.server 8765`) e abra `http://127.0.0.1:8765/`. Não abra como `file://` porque módulos 3D e requisições aos dados dependem de HTTP. O caso público é estático; o motor PyQGIS é reproduzível nesta pasta quando o runtime QGIS estiver instalado.
+
+## Histórico — caso público v14 (substituído)
 
 Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=14 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
 

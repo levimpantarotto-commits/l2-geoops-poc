@@ -13,7 +13,7 @@
       // Cada visita começa sem uma revisão feita pelo visitante.
       (baseResult.features?.features || []).forEach(feature => { feature.properties.reviewed = false; });
       baseResult.downloads ||= {};
-      ['base.png', 'mapa.png', 'mapa.pdf', 'projeto.gpkg', 'shapefile.zip', 'GeoOps_Projeto_Completo.zip', 'vetores.geojson', 'fontes_dados.json'].forEach(name => {
+      ['base.png', 'mapa.png', 'mapa.pdf', 'projeto.gpkg', 'shapefile.zip', 'GeoOps_Projeto_Completo.zip', 'vetores.geojson', 'analise-automatica.json', 'fontes_dados.json'].forEach(name => {
         baseResult.downloads[name] ||= `public-data/${name}`;
       });
     }
@@ -72,29 +72,32 @@
       document.getElementById('retryConnection').hidden = true;
       document.getElementById('connectionError').hidden = true;
       document.getElementById('engineBadge').textContent = 'DEMONSTRAÇÃO PÚBLICA · dados estáticos';
-      document.getElementById('runClassify').textContent = '✧ Mostrar cobertura no mapa';
+      document.getElementById('runClassify').textContent = '✧ Exibir análise automática';
+      document.getElementById('staticPlate').hidden = false;
       document.getElementById('fillOpacity').title = 'Disponível depois de mostrar a cobertura no mapa';
       document.getElementById('exportAll').textContent = 'Ver arquivos do caso-base ↗';
       document.querySelector('#featureForm button[type="submit"]').textContent = 'Salvar revisão de classe';
       document.getElementById('datasetNotice').textContent = 'Caso público já processado. Não envia arquivos, não conecta ao ambiente local e não mede novamente a área.';
-      document.getElementById('sourceDetail').textContent = 'Imagem e resultado pré-processados para demonstração pública';
+      document.getElementById('sourceDetail').textContent = 'Sentinel-2 visual · MapBiomas 2008/2023 · Rio Pardo OSM';
       document.querySelector('#selectionEmpty p').textContent = 'Confira a classe e marque a revisão. Nesta demonstração, contornos e áreas originais não podem ser editados.';
       document.querySelector('.review > .subtle:last-child').textContent = 'Os entregáveis são arquivos pré-gerados do caso-base; revisões não os alteram.';
       document.querySelector('#tab-qa .qa-grid article:nth-child(2) .subtle').textContent = 'A demonstração usa dados estáticos no navegador; não há sessão local, envio de arquivo ou execução remota.';
       document.querySelector('footer span:last-child').textContent = 'Caso público pré-processado · revisão ilustrativa · sem conexão local';
       document.querySelector('[data-tab="qa"]').textContent = 'QA e limites';
-      document.querySelector('#stepVectors small').textContent = 'Resultado pré-processado · MapBiomas 30 m';
-      document.querySelector('#stepVectors span').firstChild.textContent = 'Mostrar cobertura';
+      document.querySelector('#stepVectors small').textContent = 'Cinco camadas de estudo · PyQGIS pré-processado';
+      document.querySelector('#stepVectors span').firstChild.textContent = 'Análise automática';
       document.querySelector('#stepReview small').textContent = 'Classe e marcação · contorno preservado';
       document.querySelector('#stepExport small').textContent = 'Arquivos pré-gerados do caso-base';
+      document.getElementById('openManual').textContent = '✎ Ajustar traçado · opcional';
+      document.querySelector('#manualWorkspace > .subtle').textContent = 'As camadas de estudo já aparecem automaticamente. Use o desenho só para propor uma correção ou acrescentar uma feição; isto não altera os produtos pré-gerados.';
       document.querySelector('#tab-qa .qa-grid article:nth-child(2) h2').textContent = 'Leitura desta demonstração.';
-      document.querySelector('#tab-exports .preview .eyebrow').textContent = 'ARQUIVO PRÉ-GERADO DO CASO-BASE';
-      document.querySelector('#tab-exports .preview h2').textContent = 'Prévia do caso-base.';
+      document.querySelector('#tab-exports .preview .eyebrow').textContent = 'PRANCHA AUTOMÁTICA · ESTUDO';
+      document.querySelector('#tab-exports .preview h2').textContent = 'Mapa com camadas candidatas.';
       document.querySelector('#previewEmpty').innerHTML = '<p>Abra os arquivos pré-gerados do caso-base.</p><p>Revisões feitas aqui não alteram esta prévia nem os arquivos técnicos.</p>';
       document.querySelector('#tab-exports aside h2').textContent = 'Arquivos do caso-base.';
-      document.querySelector('#tab-exports aside h2 + p').textContent = 'Arquivos pré-gerados da cobertura 2023 no limite fictício de Botucatu. Ainda não incluem APP, AVN-DESC-APP, ARL ou área consolidada do mapa enviado, nem revisões feitas no navegador.';
+      document.querySelector('#tab-exports aside h2 + p').textContent = 'A prancha PNG e o GeoJSON incluem as cinco camadas candidatas de Botucatu. PDF, QGIS, GPKG e SHP antigos continuam sendo do caso-base de cobertura e não incluem essas camadas nem revisões feitas no navegador.';
       const method = document.querySelector('#methodDialog p:nth-of-type(5)');
-      method.textContent = 'Nesta demonstração pública, o resultado já foi processado. Você pode reclassificar feições e marcar a revisão no navegador; os contornos, áreas e arquivos do caso-base não mudam. APP/RL e regularidade ambiental não são avaliadas.';
+      method.textContent = 'Nesta demonstração pública, o PyQGIS já calculou as camadas de estudo. O navegador apenas as exibe e permite revisar a cobertura-base. O corredor de 30 m junto ao eixo OSM não é APP legal; a proposta ARL não vem do CAR; o uso persistente 2008/2023 não comprova ocupação antes de 22/07/2008. PDF e projeto QGIS existentes são da cobertura-base.';
       const actions = {
         stepData: () => { document.querySelector('[data-tab="map"]').click(); document.getElementById('fitMap').click(); },
         stepVectors: () => document.getElementById('runClassify').click(),

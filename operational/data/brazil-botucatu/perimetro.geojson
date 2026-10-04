@@ -1,0 +1,57 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "study-boundary",
+      "properties": {
+        "id": "study-boundary",
+        "name": "Limite de estudo fictício · Botucatu/SP",
+        "class": "Área de estudo"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -48.482,
+              -22.971
+            ],
+            [
+              -48.469,
+              -22.966
+            ],
+            [
+              -48.454,
+              -22.97
+            ],
+            [
+              -48.438,
+              -22.979
+            ],
+            [
+              -48.442,
+              -22.993
+            ],
+            [
+              -48.452,
+              -23.003
+            ],
+            [
+              -48.47,
+              -23.0
+            ],
+            [
+              -48.484,
+              -22.989
+            ],
+            [
+              -48.482,
+              -22.971
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
