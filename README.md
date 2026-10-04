@@ -1,22 +1,24 @@
 # GeoOps — estúdio de mapas e cérebro do escritório
 
-## Caso brasileiro público — v13
+## Caso brasileiro público — v14
 
-Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=13 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+Abra https://levimpantarotto-commits.github.io/l2-geoops-poc/?v=14 . O endereço principal abre Botucatu/SP, com imagem Sentinel-2 de 11/09/2023 e cobertura MapBiomas Coleção 9/2023, sobre perímetro fictício. Preserve a atribuição das fontes; veja `operational/public-data/fontes_dados.json`.
+
+No mapa, **✎ Criar traçado** abre o editor de vetores. Escolha APP, ARL, AVN-DESC-APP, área consolidada ou rio; marque pontos no mapa; selecione a feição e arraste seus vértices; salve para atualizar hectares ou quilômetros. Os traçados podem ser ligados/desligados e baixados em GeoJSON georreferenciado (EPSG:4326), legível no QGIS. Para o caso público, os rascunhos ficam neste navegador. A medida é aproximada e não substitui medição projetada e revisão técnica. O nome AVN-DESC-APP não implica desconto automático da APP: é apenas um rótulo de trabalho. APP, ARL e área consolidada exigem critérios e documentos próprios; a imagem sozinha não as determina.
 
 Para mostrar o mapa em composição semelhante à referência, use **⛶ Apresentar mapa** ou abra diretamente `operational/index.html?demo=public&present=1`. A visualização ocupa a tela, mostra norte, escala, legenda e quadro de áreas, permite abrir camadas e clicar numa feição para revisar. É uma composição do caso fictício de Botucatu, **não** a reprodução georreferenciada do mapa de 2012; APP, ARL e área consolidada continuam pendentes. A POC web não possui catálogo mundial de imagens: localização/data deste exemplo são fixas. O QGIS local também não busca automaticamente imagem por propriedade nesta versão.
 
 A aba **Motor geográfico** explica as duas camadas do produto (aplicação e PyQGIS local), a sequência efetivamente implementada e as etapas que ainda dependem dos arquivos e critérios do engenheiro. No GitHub Pages o motor não roda: as feições e os arquivos técnicos são pré-processados.
 
-O mapa interativo agora usa limite vermelho contínuo, pontos verdes na vegetação mapeada e hachuras amarelas no uso agropecuário. A legenda **Padrão do mapa enviado** e a aba **QA e limites** mostram RIO_ATE_10, APP, AVN-DESC-APP, ARL e AREA_CONSOLIDADA como especificação visual e pendências — sem desenhar nem calcular essas camadas para Botucatu. A hachura amarela deste exemplo representa **uso agropecuário em 2023**, não comprova **área rural consolidada**. O PDF/QGIS/GPKG/SHP existentes continuam sendo os arquivos originais do caso-base e não incorporam a nova simbologia do navegador.
+O mapa interativo usa limite vermelho contínuo, pontos verdes na vegetação mapeada e hachuras amarelas no uso agropecuário. O editor permite criar **rascunhos separados** de RIO_ATE_10, APP, AVN-DESC-APP, ARL e AREA_CONSOLIDADA; nenhuma dessas camadas é inferida automaticamente no caso de Botucatu. A hachura amarela da cobertura-base representa **uso agropecuário em 2023**, não comprova **área rural consolidada**. O PDF/QGIS/GPKG/SHP existentes continuam sendo os arquivos originais do caso-base e não incorporam os rascunhos do navegador. Para levá-los ao QGIS, use o GeoJSON separado.
 
 1. Comece pela imagem; marque **Cobertura do solo**, clique em **Mostrar cobertura** na etapa 02 ou use o botão superior para revelar os vetores já preparados no QGIS. As quatro etapas numeradas são clicáveis.
-2. Ligue/desligue camadas e classes, ajuste o preenchimento e selecione uma feição para revisar sua classificação.
-3. A tabela reagrupará as áreas geométricas pré-calculadas. O navegador não executa nova medição QGIS nem valida juridicamente as classes.
+2. Ligue/desligue camadas e classes, ajuste o preenchimento e selecione uma feição para revisar sua classificação. Para criar uma camada nova, use **✎ Criar traçado**, escolha o tipo e clique nos vértices sobre o mapa; finalize no primeiro ponto (polígono) ou com duplo clique (rio).
+3. A tabela da cobertura reagrupará áreas pré-calculadas. Os traçados manuais têm medidas próprias, atualizadas ao salvar vértices, e não são somados à cobertura-base porque podem se sobrepor. O navegador não executa nova medição QGIS nem valida juridicamente as classes.
 4. Abra **Entregáveis** em qualquer momento: PDF, QGIS, GPKG e SHP são do **caso-base pré-gerado**, não incorporam alterações da sessão. O GeoJSON de revisão separado registra as classes alteradas no navegador.
 5. Explore o cérebro e a sala 3D demonstrativos, sem conexão a acervo ou agentes privados.
 
-GitHub Pages hospeda somente a demonstração estática. Upload, edição de vértices e nova geração GIS requerem o aplicativo local com QGIS. Não há backend público, login, envio de dados, APP/RL delimitadas ou declaração de regularidade. Recarregar descarta a revisão de classes da sessão. A resolução de 30 m não mostra todos os rios/nascentes.
+GitHub Pages hospeda somente a demonstração estática. Nele, o editor manual de vetores funciona; upload de arquivo próprio, medição QGIS e nova geração de PDF/GPKG/SHP requerem o aplicativo local. Não há backend público, login, envio de dados, APP/RL automaticamente delimitadas ou declaração de regularidade. Recarregar descarta a revisão de classes da cobertura, mas preserva os rascunhos manuais do exemplo no navegador. A resolução de 30 m não mostra todos os rios/nascentes.
 
 ## Cenário ilustrativo anterior — v5
 
